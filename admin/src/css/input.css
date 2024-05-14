@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply dark:bg-neutral-900 dark:text-white;
+}
+
+.tab-active {
+    @apply bg-white text-gray-800 shadow-sm hover:border-transparent dark:bg-neutral-700 dark:text-neutral-200 dark:hover:border-transparent;
+}
+
+.w-switch {
+    @apply w-[3.25rem];
+}

@@ -1,0 +1,30 @@
+# Node modules
+node_modules/
+
+# Dependency directories
+**/node_modules/
+**/bower_components/
+
+# Distribution directory
+dist/
+
+# Cache files
+.cache/
+
+# Environment variables
+.env
+.S
+
+.DS_Store
+**/.DS_Store
+
+# Editor directories and files
+.vscode/
+.idea/
+**/.vscode/
+**/.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
