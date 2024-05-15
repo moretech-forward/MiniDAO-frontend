@@ -15,7 +15,10 @@
       "htm/preact": "https://esm.sh/htm@3.1.1/preact?external=preact"
     }
   }
+
+
 </script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <link
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         rel="stylesheet"
@@ -76,11 +79,11 @@
     </div>
 </div>
 <!-- ========== HEADER ========== -->
-<header class="flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full bg-white border-b border-gray-200 text-sm py-3 sm:py-0 dark:bg-neutral-800 dark:border-neutral-700">
+<header id="header" class="flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full bg-white border-b border-gray-200 text-sm py-3 sm:py-0 dark:bg-neutral-800 dark:border-neutral-700">
     <nav aria-label="Global"
-         class="relative max-w-[85rem] flex flex-wrap basis-full items-center w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
+         class="relative flex flex-wrap basis-full items-center w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
-            <a aria-label="Brand" class="flex-none text-xl font-semibold dark:text-white" href="#">MiniDAO</a>
+            <a aria-label="Brand" class="flex-none text-xl font-semibold dark:text-white" href="#" id="minidao-name"></a>
         </div>
 
 
@@ -102,21 +105,25 @@
                 </button>
             </div>
             <span class="ml-4">
-                <button class="hs-dark-mode-active:hidden block hs-dark-mode rounded-full" data-hs-theme-click-value="dark"
+                <button class="hs-dark-mode-active:hidden block hs-dark-mode rounded-full"
+                        data-hs-theme-click-value="dark"
                         type="button">
                     <span class="group inline-flex flex-shrink-0 justify-center items-center size-9 font-medium rounded-full text-gray-800 hover:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-700">
                       <svg class="flex-shrink-0 size-4" fill="none" height="24" stroke="currentColor"
-                           stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                           stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                           width="24"
                            xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
                       </svg>
                     </span>
                 </button>
-                <button class="hs-dark-mode-active:block hidden hs-dark-mode rounded-full" data-hs-theme-click-value="light"
+                <button class="hs-dark-mode-active:block hidden hs-dark-mode rounded-full"
+                        data-hs-theme-click-value="light"
                         type="button">
                     <span class="group inline-flex flex-shrink-0 justify-center items-center size-9 font-medium rounded-full text-gray-800 hover:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-700">
                       <svg class="flex-shrink-0 size-4" fill="none" height="24" stroke="currentColor"
-                           stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                           stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                           width="24"
                            xmlns="http://www.w3.org/2000/svg">
                         <circle cx="12" cy="12" r="4"></circle>
                         <path d="M12 2v2"></path>
@@ -133,7 +140,7 @@
             </span>
         </div>
 
-        <div class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full fixed top-0 start-0 transition-all duration-300 transform h-full max-w-xs w-full z-[60] bg-white border-e basis-full grow sm:order-2 sm:static sm:block sm:h-auto sm:max-w-none sm:w-auto sm:border-r-transparent sm:transition-none sm:translate-x-0 sm:z-40 sm:basis-auto dark:bg-neutral-800 dark:border-r-gray-700 sm:dark:border-r-transparent hidden"
+        <div class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full fixed top-0 start-0 transition-all duration-300 transform h-full max-w-xs w-full bg-white border-e basis-full grow sm:order-2 sm:static sm:block sm:h-auto sm:max-w-none sm:w-auto sm:border-r-transparent sm:transition-none sm:translate-x-0 sm:z-40 sm:basis-auto dark:bg-neutral-800 dark:border-r-gray-700 sm:dark:border-r-transparent hidden"
              data-hs-overlay-close-on-resize
              id="navbar-offcanvas-example" tabindex="-1">
             <ul class="flex flex-col gap-y-4 gap-x-0 mt-5 sm:flex-row sm:items-center sm:justify-end sm:gap-y-0 sm:gap-x-7 sm:mt-0 sm:ps-7">
@@ -149,12 +156,13 @@
 
 <!-- ========== MAIN CONTENT ========== -->
 <main id="content">
-    <div class="page mx-auto px-6 mt-6 flex flex-col gap-6" id="post-page" style="max-width: 800px;">
+    <div class="page mx-auto px-6 mt-6 flex flex-col gap-6" id="post-page">
         <div class="flex flex-col gap-4 sm:grid sm:grid-cols-12 sm:items-end">
-            <button data-hs-overlay="#feed-info-modal" type="button" class="col-span-2 btn btn-df btn-outline-default h-12">
+            <button class="col-span-2 btn btn-df btn-outline-default h-12" data-hs-overlay="#feed-info-modal"
+                    type="button">
                 Info
             </button>
-            <div class="hs-overlay hs-overlay-open:opacity-100 hs-overlay-open:duration-500 hidden size-full fixed top-0 start-0 z-[80] opacity-0 overflow-x-hidden transition-all overflow-y-auto pointer-events-none"
+            <div class="hs-overlay hs-overlay-open:opacity-100 hs-overlay-open:duration-500 hidden size-full fixed top-0 start-0 z-80 opacity-0 overflow-x-hidden transition-all overflow-y-auto pointer-events-none"
                  id="feed-info-modal">
                 <div class="sm:max-w-lg sm:w-full m-3 sm:mx-auto">
                     <div class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
@@ -167,7 +175,8 @@
                                     type="button">
                                 <span class="sr-only">Close</span>
                                 <svg class="flex-shrink-0 size-4" fill="none" height="24"
-                                     stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                                     stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                     stroke-width="2" viewBox="0 0 24 24"
                                      width="24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M18 6 6 18"></path>
                                     <path d="m6 6 12 12"></path>
@@ -193,34 +202,85 @@
                     </div>
                 </div>
             </div>
-            <button id="delegate-btn" type="button" class="col-span-2 btn btn-df btn-outline-default h-12">
+            <button class="col-span-2 btn btn-df btn-outline-default h-12 relative" id="delegate-btn" type="button">
                 Delegate
             </button>
 
             <script>
                 const dgbtn = document.getElementById('delegate-btn')
                 dgbtn.addEventListener('click', async () => {
-                    const res = await token_contract.delegate(walletAddress)
-                    console.log(res)
+                    try {
+                        addFormLoader(dgbtn.id)
+                        await token_contract.delegate(walletAddress)
+                        toast('Success delegate!', 'success')
+                    } catch (err) {
+                        console.log(err)
+                        toast('Error delegate!', 'error')
+                    } finally {
+                        removeFormLoader(dgbtn.id)
+                    }
                 })
             </script>
             <div class="col-span-4">
-                <label for="status-filter" class="label">Status</label>
-                <select id="status-filter" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                    <option>All</option>
-                    <option>Success</option>
-                    <option>Pending</option>
-                    <option>Queue</option>
+                <label class="label" for="status-filter">Status</label>
+                <select class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                        id="status-filter">
                 </select>
             </div>
             <div class="col-span-4">
-                <label for="filter" class="label">Filter</label>
-                <select id="filter" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                    <option>Newest</option>
-                    <option>Older</option>
-                    <option>And more</option>
+                <label class="label" for="filter">Filter</label>
+                <select class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                        id="filter">
                 </select>
             </div>
+
+            <script type="module">
+                const status_filter = document.getElementById('status-filter')
+                const filter = document.getElementById('filter')
+
+                const statuses = [
+                    'all',
+                    'Pending',
+                    'Active',
+                    'Canceled',
+                    'Defeated',
+                    'Succeeded',
+                    'Queued',
+                    'Expired',
+                    'Executed'
+                ]
+
+                const filters = [
+                    'Newest',
+                    'Oldest'
+                ]
+
+                statuses.forEach(status => {
+                    status_filter.innerHTML += (`<option ${localStorage.getItem('sort_status') === status ? 'selected' : ''}>${status}</option>`)
+                })
+
+                filters.forEach(filter_item => {
+                    filter.innerHTML += (`<option ${localStorage.getItem('sort_direction') === filter_item ? 'selected' : ''}>${filter_item}</option>`)
+                })
+
+                status_filter.addEventListener('change', e => {
+                    console.log(e.target.value)
+                    localStorage.setItem('sort_status', e.target.value)
+                    getPosts().then(() => {
+                        const event = new Event('postsUpdated');
+                        document.dispatchEvent(event);
+                    })
+                })
+
+                filter.addEventListener('change', e => {
+                    console.log(e.target.value)
+                    localStorage.setItem('sort_direction', e.target.value)
+                    getPosts().then(() => {
+                        const event = new Event('postsUpdated');
+                        document.dispatchEvent(event);
+                    })
+                })
+            </script>
         </div>
 
         <!--        Post Feed-->
@@ -262,20 +322,24 @@
         </div>
 
         <div>
+            <button class="btn btn-df btn-outline-default w-96 mb-4" data-hs-overlay="#templates-info-modal">Info about
+                templates
+            </button>
             <form class="template-card card gap-4 w-96" id="templates-issue-grant-form">
                 <div>
                     <label class="label" for="issue-wallet-address">Receiver wallet address</label>
-                    <input class="input" name="wallet_address" id="issue-wallet-address" placeholder="Enter wallet address" type="text">
+                    <input class="input" id="issue-wallet-address" name="wallet_address"
+                           placeholder="Enter wallet address" type="text">
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="issue-amount">Amount</label>
-                    <input class="input" name="amount" id="issue-amount" placeholder="Enter amount" type="number">
+                    <input class="input" id="issue-amount" name="amount" placeholder="Enter amount" type="number">
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="issue-description">Description</label>
-                    <textarea class="input" name="description" id="issue-description" placeholder="Enter your text..."
+                    <textarea class="input" id="issue-description" name="description" placeholder="Enter your text..."
                               rows="3"></textarea>
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
@@ -330,17 +394,19 @@
             <form class="template-card hidden card gap-4 w-96" id="templates-additional-mint-form">
                 <div>
                     <label class="label" for="additional-wallet-address">Receiver wallet address</label>
-                    <input class="input" name="wallet_address" id="additional-wallet-address" placeholder="Enter wallet address" type="text">
+                    <input class="input" id="additional-wallet-address" name="wallet_address"
+                           placeholder="Enter wallet address" type="text">
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="additional-amount">Amount</label>
-                    <input class="input" name="amount" id="additional-amount" placeholder="Enter amount" type="number">
+                    <input class="input" id="additional-amount" name="amount" placeholder="Enter amount" type="number">
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="additional-description">Description</label>
-                    <textarea class="input" name="description" id="additional-description" placeholder="Enter your text..." rows="3"></textarea>
+                    <textarea class="input" id="additional-description" name="description"
+                              placeholder="Enter your text..." rows="3"></textarea>
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
 
@@ -390,22 +456,25 @@
             <form class="template-card hidden card gap-4 w-96" id="templates-pay-erc20-form">
                 <div>
                     <label class="label" for="pay-erc20-wallet-address">Receiver wallet address</label>
-                    <input class="input" name="wallet_address" id="pay-erc20-wallet-address" placeholder="Enter wallet address" type="text">
+                    <input class="input" id="pay-erc20-wallet-address" name="wallet_address"
+                           placeholder="Enter wallet address" type="text">
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="pay-erc20-amount">Amount</label>
-                    <input class="input" name="amount" id="pay-erc20-amount" placeholder="Enter amount" type="number">
+                    <input class="input" id="pay-erc20-amount" name="amount" placeholder="Enter amount" type="number">
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="pay-erc20-token-address">Token address</label>
-                    <input class="input" name="token_address" id="pay-erc20-token-address" placeholder="Enter token address" type="text">
+                    <input class="input" id="pay-erc20-token-address" name="token_address"
+                           placeholder="Enter token address" type="text">
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="pay-erc20-description">Description</label>
-                    <textarea class="input" name="description" id="pay-erc20-description" placeholder="Enter your text..."
+                    <textarea class="input" id="pay-erc20-description" name="description"
+                              placeholder="Enter your text..."
                               rows="3"></textarea>
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
@@ -422,7 +491,7 @@
                     form.addEventListener('submit', async e => {
                         e.preventDefault()
 
-                        if(!checkRequired([wallet_address, amount, token_address, description]) && !checkWallet([wallet_address, token_address])) {
+                        if (!checkRequired([wallet_address, amount, token_address, description]) && !checkWallet([wallet_address, token_address])) {
                             if (!contract) {
                                 toast('Contract not connected!', 'error')
                             }
@@ -457,22 +526,25 @@
             <form class="template-card hidden card gap-4 w-96" id="templates-pay-nft721-form">
                 <div>
                     <label class="label" for="pay-erc20-wallet-address">Receiver wallet address</label>
-                    <input class="input" name="wallet_address" id="pay-nft721-wallet-address" placeholder="Enter wallet address" type="text">
+                    <input class="input" id="pay-nft721-wallet-address" name="wallet_address"
+                           placeholder="Enter wallet address" type="text">
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="pay-nft721-id">ID</label>
-                    <input class="input" name="nft721-id" id="pay-nft721-id" placeholder="Enter ID" type="number">
+                    <input class="input" id="pay-nft721-id" name="nft721-id" placeholder="Enter ID" type="number">
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="pay-nft721-token-address">Token address</label>
-                    <input class="input" name="token_address" id="pay-nft721-token-address" placeholder="Enter token address" type="text">
+                    <input class="input" id="pay-nft721-token-address" name="token_address"
+                           placeholder="Enter token address" type="text">
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="pay-nft721-description">Description</label>
-                    <textarea class="input" name="description" id="pay-nft721-description" placeholder="Enter your text..."
+                    <textarea class="input" id="pay-nft721-description" name="description"
+                              placeholder="Enter your text..."
                               rows="3"></textarea>
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
@@ -489,7 +561,7 @@
                     form.addEventListener('submit', async e => {
                         e.preventDefault()
 
-                        if(!checkRequired([wallet_address, id, token_address, description]) && !checkWallet([wallet_address, token_address])) {
+                        if (!checkRequired([wallet_address, id, token_address, description]) && !checkWallet([wallet_address, token_address])) {
                             if (!contract) {
                                 toast('Contract not connected!', 'error')
                             }
@@ -524,8 +596,8 @@
             <form class="template-card hidden card gap-4 w-96" id="templates-simple-voting-form">
                 <div>
                     <label class="label" for="simple-voting-description">Description</label>
-                    <textarea class="input" name="description" id="simple-voting-description" placeholder="Enter your text..." rows="3"
-                              style="min-height: 200px;"></textarea>
+                    <textarea class="input" id="simple-voting-description" name="description"
+                              placeholder="Enter your text..." rows="3"></textarea>
                     <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
 
@@ -548,12 +620,12 @@
                             }
 
                             try {
+                                addFormLoader(form.id)
                                 await mini_contract.propose(targets, values, calldatas, description.value);
                                 getPosts().then(() => {
                                     const event = new Event('postsUpdated');
                                     document.dispatchEvent(event);
                                 })
-                                addFormLoader(form.id)
                                 toast('Success create simple vote!', 'success')
                                 form.reset()
                             } catch (err) {
@@ -566,6 +638,57 @@
                     })
                 </script>
             </form>
+        </div>
+
+        <div class="hs-overlay hs-overlay-open:opacity-100 hs-overlay-open:duration-500 hidden size-full fixed top-0 start-0 z-80 opacity-0 overflow-x-hidden transition-all overflow-y-auto pointer-events-none"
+             id="templates-info-modal">
+            <div class="sm:max-w-lg sm:w-full m-3 sm:mx-auto">
+                <div class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                    <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+                        <h3 class="font-bold text-gray-800 dark:text-white">
+                            Templates information
+                        </h3>
+                        <button class="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
+                                data-hs-overlay="#templates-info-modal"
+                                type="button">
+                            <span class="sr-only">Close</span>
+                            <svg class="flex-shrink-0 size-4" fill="none" height="24" stroke="currentColor"
+                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                                 width="24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 6 6 18"></path>
+                                <path d="m6 6 12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-4 overflow-y-auto">
+                        <p class="mt-1 text-gray-800 dark:text-neutral-400">
+                            Here you can choose 5 templates to vote on. Be
+                            sure to add a description of the proposal!
+                            <br/>1. Pay out the grant in native tokens of
+                            the platform, DAO has a treasury from which the
+                            specified number of tokens will be transferred
+                            to the specified address. <br/>2. Additional
+                            issue of DAO tokens to give tokens to new
+                            participants. <br/>3. Pay the grant in ERC20
+                            tokens, DAO has a treasury from which a
+                            specified number of tokens will be transferred
+                            to a specified address. <br/>4. Pay the grant
+                            in ERC721 tokens, DAO has a treasury from which
+                            the specified NFT will be transferred to the
+                            specified address. <br/>5. Simple voting - a
+                            vote that doesn't need to be executed, you just
+                            write a proposal and it can be voted on.
+                        </p>
+                    </div>
+                    <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+                        <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                data-hs-overlay="#templates-info-modal"
+                                type="button">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script>
@@ -597,42 +720,135 @@
     </div>
 
     <div class="page flex flex-col items-center pt-12 hidden" id="create-proposal-page">
+        <div class="hs-overlay hs-overlay-open:opacity-100 hs-overlay-open:duration-500 hidden size-full fixed top-0 start-0 z-80 opacity-0 overflow-x-hidden transition-all overflow-y-auto pointer-events-none"
+             id="create-proposal-info-modal">
+            <div class="sm:max-w-lg sm:w-full m-3 sm:mx-auto">
+                <div class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                    <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+                        <h3 class="font-bold text-gray-800 dark:text-white">
+                            Create proposal information
+                        </h3>
+                        <button class="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
+                                data-hs-overlay="#create-proposal-info-modal"
+                                type="button">
+                            <span class="sr-only">Close</span>
+                            <svg class="flex-shrink-0 size-4" fill="none" height="24" stroke="currentColor"
+                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                                 width="24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 6 6 18"></path>
+                                <path d="m6 6 12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-4 overflow-y-auto">
+                        <p class="mt-1 text-gray-800 dark:text-neutral-400">
+                            The page is for people who have sufficient competencies to create their contract and create
+                            a proposal in the form of a contract.
+                        </p>
+                    </div>
+                    <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+                        <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                data-hs-overlay="#create-proposal-info-modal"
+                                type="button">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-df btn-outline-default w-96 mb-4" data-hs-overlay="#create-proposal-info-modal">Info
+            about create proposal
+        </button>
         <form class="card flex flex-col gap-4 w-96" id="create-proposal-form">
             <div>
                 <label class="label" for="proposal-targets">Targets</label>
-                <textarea class="textarea" id="proposal-targets" name="targets" placeholder="Enter targets..."
-                          rows="4"></textarea>
+                <textarea class="input" id="proposal-targets" name="targets" placeholder="Enter targets..."
+                          rows="3"></textarea>
+                <p class="text-sm text-red-600 mt-2 hidden"></p>
             </div>
             <div>
                 <label class="label" for="proposal-values">Values</label>
-                <textarea class="textarea" id="proposal-values" name="values" placeholder="Enter targets..."
-                          rows="4"></textarea>
+                <textarea class="input" id="proposal-values" name="values" placeholder="Enter targets..."
+                          rows="3"></textarea>
+                <p class="text-sm text-red-600 mt-2 hidden"></p>
             </div>
             <div>
                 <label class="label" for="proposal-call-datas">Call datas</label>
-                <textarea class="textarea" id="proposal-call-datas" name="calldatas" placeholder="Enter targets..."
-                          rows="4"></textarea>
+                <textarea class="input" id="proposal-call-datas" name="calldatas" placeholder="Enter targets..."
+                          rows="3"></textarea>
+                <p class="text-sm text-red-600 mt-2 hidden"></p>
             </div>
             <div>
                 <label class="label" for="proposal-description">Description</label>
-                <textarea class="textarea" id="proposal-description" name="description" placeholder="Enter targets..."
-                          rows="4"></textarea>
+                <textarea class="input" id="proposal-description" name="description" placeholder="Enter targets..."
+                          rows="3"></textarea>
+                <p class="text-sm text-red-600 mt-2 hidden"></p>
             </div>
             <button class="btn btn-df btn-solid-primary">Create proposal</button>
 
             <script type="module">
                 // TODO
                 const form = document.getElementById('create-proposal-form')
-                // const targets = form.querySelector('')
+                const targets = form.querySelector('textarea[name=targets]')
+                const values = form.querySelector('textarea[name=values]')
+                const calldatas = form.querySelector('textarea[name=calldatas]')
+                const description = form.querySelector('textarea[name=description]')
 
-                form.addEventListener('submit', async e => {})
+                form.addEventListener('submit', async e => {
+                    e.preventDefault()
+
+                    const create_proposal_targets = targets.value
+                        .split("\n")
+                        .map((wallet) => wallet.trim())
+                        .filter((wallet) => wallet.trim() !== "");
+                    const create_proposal_values = values.value
+                        .split("\n")
+                        .map((wallet) => wallet.trim())
+                        .filter((wallet) => wallet.trim() !== "");
+                    const create_proposal_call_datas = calldatas.value
+                        .split("\n")
+                        .map((wallet) => wallet.trim())
+                        .filter((wallet) => wallet.trim() !== "");
+                    const create_proposal_description = description.value
+
+                    if (!checkRequired([targets, values, calldatas, description])) {
+                        for (const wallet of create_proposal_targets) {
+                            if (!/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
+                                toast('Targets have invalid addresses!', 'info')
+                                return
+                            }
+                        }
+
+                        try {
+                            addFormLoader(form.id)
+                            await mini_contract.propose(
+                                create_proposal_targets,
+                                create_proposal_values,
+                                create_proposal_call_datas,
+                                create_proposal_description
+                            );
+                            toast("Success create!", 'success');
+                            form.reset();
+                            getPosts().then(() => {
+                                const event = new Event('postsUpdated');
+                                document.dispatchEvent(event)
+                            })
+                        } catch (error) {
+                            console.log(error);
+                            toast("Error create!", 'error');
+                        } finally {
+                            removeFormLoader(form.id)
+                        }
+                    }
+                })
             </script>
         </form>
     </div>
 
     <div class="page flex flex-col items-center gap-10 pt-10 hidden" id="donate-page">
-        <p style="max-width: 600px;" class="text-center text-xl">
-            To donate money to us you can simply send ERC20 tokens and native network tokens to the: <br> address
+        <p class="text-center text-xl">
+            To donate money to us you can simply send ERC20 tokens and native network tokens to the: <br> <span
+                id="treasury-address"></span>
         </p>
 
         <div class="flex p-1 bg-gray-100 rounded-lg dark:bg-neutral-800">
@@ -654,34 +870,89 @@
             <form class="donate-card card gap-4 w-96" id="donate-native-form">
                 <div>
                     <label class="label" for="donate-amount">Amount</label>
-                    <input class="input" id="donate-amount" placeholder="Enter amount" type="number">
+                    <input class="input" id="donate-amount" name="amount" placeholder="Enter amount in wei"
+                           type="number">
+                    <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
 
                 <button class="btn btn-df btn-solid-primary">Send</button>
 
                 <script type="module">
                     const form = document.getElementById('donate-native-form')
+                    const amount = form.querySelector('input[name=amount]')
                     form.addEventListener('submit', async e => {
                         e.preventDefault()
-                        addFormLoader(form.id)
-                        toast('Some text content about error exeption for test this container and more functions!', 'success')
-                        setTimeout(() => {
-                            removeFormLoader(form.id)
-                        }, 2000)
+
+                        if (!checkRequired([amount])) {
+                            try {
+                                await signer.sendTransaction({
+                                    to: treasury_address,
+                                    value: amount.value,
+                                });
+                                addFormLoader(form.id)
+                                toast('Success donate native token!', 'success')
+                                form.reset()
+                            } catch (err) {
+                                console.log(err)
+                                toast('Error donate native token!', 'error')
+                            } finally {
+                                removeFormLoader(form.id)
+                            }
+                        }
                     })
                 </script>
             </form>
             <form class="donate-card hidden card gap-4 w-96" id="donate-erc20-form">
                 <div>
                     <label class="label" for="donate-erc20-amount">Amount</label>
-                    <input class="input" id="donate-erc20-amount" placeholder="Enter amount" type="number">
+                    <input class="input" id="donate-erc20-amount" name="amount" placeholder="Enter amount"
+                           type="number">
+                    <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
                 <div>
                     <label class="label" for="donate-erc-20-token-address">Token address</label>
-                    <input class="input" id="donate-erc-20-token-address" placeholder="Enter token address" type="text">
+                    <input class="input" id="donate-erc-20-token-address" name="token_address"
+                           placeholder="Enter token address" type="text">
+                    <p class="text-sm text-red-600 mt-2 hidden"></p>
                 </div>
 
                 <button class="btn btn-df btn-solid-primary">Send</button>
+
+                <script type="module">
+                    const form = document.getElementById('donate-erc20-form')
+                    const amount = form.querySelector('input[name=amount]')
+                    const token_address = form.querySelector('input[name=token_address]')
+                    form.addEventListener('submit', async e => {
+                        e.preventDefault()
+
+                        if (!checkRequired([amount, token_address])) {
+                            if (!/^0x[a-fA-F0-9]{40}$/.test(token_address.value)) {
+                                toast("Wrong token address!", 'error');
+                            }
+
+                            try {
+                                const erc20Contract = new ethers.Contract(
+                                    token_address.value,
+                                    tokenabi,
+                                    signer
+                                );
+                                const decimals = await token_contract.decimals();
+                                await erc20Contract.transfer(
+                                    treasury_address,
+                                    BigInt(amount.value) * 10n ** decimals
+                                );
+                                addFormLoader(form.id)
+                                toast('Success donate erc20 token!', 'success')
+                                form.reset()
+                            } catch (err) {
+                                console.log(err)
+                                toast('Error donate erc20 token!', 'error')
+                            } finally {
+                                removeFormLoader(form.id)
+                            }
+                        }
+                    })
+                </script>
             </form>
         </div>
 
@@ -737,12 +1008,13 @@
 <!-- ========== END MAIN CONTENT ========== -->
 
 <!--post content modal-->
-<div class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" id="post-modal">
-    <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto h-[calc(100%-3.5rem)] min-h-[calc(100%-3.5rem)] flex items-center">
+<div class="hs-overlay hidden size-full fixed top-0 start-0 z-80 overflow-x-hidden overflow-y-auto pointer-events-none"
+     id="post-modal">
+    <div id="post-modal-inner" class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto flex items-center">
         <div class="w-full max-h-full overflow-hidden flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
             <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
-                <h3 class="font-bold text-gray-800 dark:text-white">
-                    0xFDA...ASKPOQW912DA
+                <h3 class="font-bold text-gray-800 dark:text-white" id="post-modal-proposer">
+
                 </h3>
                 <button class="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
                         data-hs-overlay="#post-modal"
@@ -757,13 +1029,8 @@
                 </button>
             </div>
             <div class="p-4 overflow-y-auto">
-                <div>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                    with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-                    publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                <div id="post-modal-text">
+
                 </div>
             </div>
             <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
@@ -777,18 +1044,8 @@
     </div>
 </div>
 
-<!--<div-->
-<!--        class="fixed z-10 flex flex-col gap-4 items-center w-full top-4 w-96 min-h-10"-->
-<!--        id="toastContainer"-->
-<!--&gt;</div>-->
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.jsdelivr.net/npm/preline@2.1.0/dist/preline.min.js"></script>
-<script
-        crossorigin="anonymous"
-        integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw=="
-        referrerpolicy="no-referrer"
-        src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"
-></script>
 <!--    utils-->
 <script>
     const getStatusNameById = (status_id) => {
@@ -820,32 +1077,10 @@
     }
 
     function toast(message, status, timeout) {
-        const toastElement = document.createElement('div')
-        const innerToastHtml = `
-        <div class="flex p-4">
-            <div class="flex-shrink-0">
-                ${getToastIcon(status)}
-            </div>
-            <div class="ms-3">
-                <p class="text-sm text-gray-700 dark:text-neutral-400">
-                    ${message}
-                </p>
-            </div>
-        </div>`
-
-        toastElement.style.animationDuration = '1s'
-        toastElement.classList.add('toast', 'toast-shadow', 'animate__animated', 'animate__fadeInRight')
-        toastElement.innerHTML = innerToastHtml
-
-        document.body.appendChild(toastElement)
-
-        setTimeout(() => {
-            toastElement.classList.remove('animate__fadeInRight')
-            toastElement.classList.add('animate__fadeOutRight')
-            setTimeout(() => {
-                document.body.removeChild(toastElement)
-            }, 800)
-        }, timeout ? timeout : 5000)
+        Toastify({
+            text: message,
+            duration: timeout? timeout : 5000
+        }).showToast();
     }
 
     function showError(input, message) {
@@ -862,7 +1097,7 @@
 
     function checkWallet(inputArr) {
         let is_error = false;
-        inputArr.forEach(function(input) {
+        inputArr.forEach(function (input) {
             if (input.value.trim() === '') {
                 showError(input, `${getFieldName(input)} is required`);
                 is_error = true;
@@ -882,11 +1117,11 @@
 
     function checkRequired(inputArr) {
         let is_error = false;
-        inputArr.forEach(function(input){
-            if(input.value.trim() === ''){
-                showError(input,`${getFieldName(input)} is required`)
+        inputArr.forEach(function (input) {
+            if (input.value.trim() === '') {
+                showError(input, `${getFieldName(input)} is required`)
                 is_error = true
-            }else {
+            } else {
                 showSuccess(input);
             }
         });
@@ -900,10 +1135,8 @@
 
     function addFormLoader(form_id) {
         const loader_html = `
-    <div id="${form_id + '-loader'}" class="absolute top-0 start-0 w-full h-full bg-custom-blur rounded-lg flex items-center justify-center flex-col gap-2">
-        <div class="animate-spin inline-block size-6" role="status" aria-label="loading">
-            <svg class="fill-blue-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);"><path d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"></path></svg>
-        </div>
+    <div id="${form_id + '-loader'}" class="load-form">
+        <span class="loader"></span>
     </div>`;
 
         const form = document.getElementById(form_id);
@@ -944,20 +1177,23 @@
 </script>
 
 <!--ethers js initializing-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.12.1/ethers.umd.min.js" integrity="sha512-e73T2EWkw8PZVlmYJl77YTCHY20/Z7oPCPOeKZGCulv9SEnLZEV3KLh27SJ9r0Q1HCPB/uVwnerv4b/Hkle6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script crossorigin="anonymous"
+        integrity="sha512-e73T2EWkw8PZVlmYJl77YTCHY20/Z7oPCPOeKZGCulv9SEnLZEV3KLh27SJ9r0Q1HCPB/uVwnerv4b/Hkle6EA=="
+        referrerpolicy="no-referrer"
+        src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.12.1/ethers.umd.min.js"></script>
 <script>
     // only for local
     const privateKey = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
 </script>
 <script type="text/javascript">
     const abi = [
-            "constructor(uint256 _minDelay, string _nameToken, string _symbolToken, string _nameDAO, uint48 _votingDelay, uint32 _votingPeriod, uint256 _quorumValue) payable",
-            "function governor() view returns (address)",
-            "function myAddr() view returns (address)",
-            "function timeLock() view returns (address)",
-            "function token() view returns (address)",
-            "function treasury() view returns (address)"
-        ];
+        "constructor(uint256 _minDelay, string _nameToken, string _symbolToken, string _nameDAO, uint48 _votingDelay, uint32 _votingPeriod, uint256 _quorumValue) payable",
+        "function governor() view returns (address)",
+        "function myAddr() view returns (address)",
+        "function timeLock() view returns (address)",
+        "function token() view returns (address)",
+        "function treasury() view returns (address)"
+    ];
     const miniabi = [
         "constructor(address _token, address _timelock, string _name, uint48 _votingDelay, uint32 _votingPeriod, uint256 _quorumValue)",
         "error CheckpointUnorderedInsertion()",
@@ -1109,34 +1345,100 @@
         "function releaseNativeToken(address to, uint256 amount)"
     ];
 
-    let contract_address, mini_address, token_address, treasury_address;
-    let provider, signer, walletAddress;
-    let contract, mini_contract, token_contract, treasury_contract;
+    let contract_address, mini_address, token_address, treasury_address
+    let provider, signer, walletAddress
+    let contract, mini_contract, token_contract, treasury_contract
+
+    const getContractAddress = () => {
+        const button = document.getElementById('btn')
+        if (button) {
+            button.click()
+
+            setTimeout(() => {
+                contract_address = document.getElementById(
+                    'form-output-myAddr-0'
+                ).innerHTML
+                console.log('contract address: ', contract_address)
+            }, 500)
+        }
+    }
 
     const initApp = async () => {
-        contract_address = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
-        provider = ethers.getDefaultProvider("http://127.0.0.1:8545/")
-        signer = new ethers.Wallet(privateKey, provider)
-        walletAddress = await signer.getAddress()
+        if (window.parent.ethereum == null) {
+            console.log('MetaMask not installed; using read-only defaults')
+            provider = ethers.getDefaultProvider()
+        } else {
+            provider = new ethers.BrowserProvider(window.parent.ethereum)
 
-        contract = new ethers.Contract(contract_address, abi, signer)
+            signer = await provider.getSigner()
+            contract = new ethers.Contract(contract_address, abi, signer)
 
-        mini_address = await contract.governor()
-        mini_contract = new ethers.Contract(mini_address, miniabi, signer)
+            mini_address = await contract.governor()
+            mini_contract = new ethers.Contract(
+                mini_address,
+                miniabi,
+                signer
+            )
 
-        token_address = await contract.token()
-        token_contract = new ethers.Contract(token_address, tokenabi, signer)
+            console.log()
 
-        treasury_address = await contract.treasury()
-        treasury_contract = new ethers.Contract(treasury_address, treasuryabi, signer)
+            token_address = await contract.token()
+            token_contract = new ethers.Contract(
+                token_address,
+                tokenabi,
+                signer
+            )
+
+            treasury_address = await contract.treasury()
+            treasury_contract = new ethers.Contract(
+                treasury_address,
+                treasuryabi,
+                signer
+            )
+
+            document.getElementById('treasury-address').innerHTML =
+                treasury_address
+            console.log(treasury_address)
+
+            walletAddress = signer.getAddress()
+        }
     }
+
+    setTimeout(() => {
+        getContractAddress()
+    }, 500)
+    setTimeout(() => {
+        initApp().then(async () => {
+            document.getElementById('minidao-name').innerHTML = await mini_contract.name()
+        })
+    }, 2100)
+
+    // const initApp = async () => {
+    //     contract_address = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+    //     provider = ethers.getDefaultProvider("http://127.0.0.1:8545/")
+    //     signer = new ethers.Wallet(privateKey, provider)
+    //     walletAddress = await signer.getAddress()
+    //
+    //     contract = new ethers.Contract(contract_address, abi, signer)
+    //
+    //     mini_address = await contract.governor()
+    //     mini_contract = new ethers.Contract(mini_address, miniabi, signer)
+    //
+    //     token_address = await contract.token()
+    //     token_contract = new ethers.Contract(token_address, tokenabi, signer)
+    //
+    //     treasury_address = await contract.treasury()
+    //     treasury_contract = new ethers.Contract(treasury_address, treasuryabi, signer)
+    //
+    //     document.getElementById('treasury-address').innerHTML = treasury_address
+    // }
 
     window.posts = []
     const getPosts = async () => {
         window.posts = []
         const data = await mini_contract.queryFilter("ProposalCreated")
-        for (const item of data) {
-            // get voteStart date
+
+        for (const [index, item] of data.entries()) {
             let formattedDate
             const block = await provider.getBlock(item.args.voteStart);
             if (block) {
@@ -1160,29 +1462,56 @@
             const countDown = (votes[0] / 10n ** decimals).toString();
 
             const post = {
+                index: index,
                 proposer: item.args.proposer,
                 vote_start: block ? formattedDate : item.args.voteStart,
                 vote_end: item.args.voteEnd,
                 description: item.args.description,
                 status: getStatusNameById(status_id),
+                status_id: status_id,
                 votes: {
                     down: countDown,
                     up: countUp,
                     neutral: countNeutral,
                 },
                 extra: {
-                    targets: item.args.targets,
-                    values: item.args.values,
-                    calldatas: item.args.calldatas,
+                    targets: Object.values(item.args.targets),
+                    values: Object.values(item.args.values).length < 1
+                        ? Array(Object.values(item.args.targets).length).fill(0)
+                        : Object.values(item.args.values),
+                    calldatas: Object.values(item.args.calldatas),
                     proposalId: item.args.proposalId
                 }
             }
 
             window.posts.push(post);
         }
+        if (localStorage.getItem('sort_direction') && localStorage.getItem('sort_direction') !== null && localStorage.getItem('sort_direction') !== "" && localStorage.getItem('sort_status') !== "" && localStorage.getItem('sort_status') !== null && localStorage.getItem('sort_status')) {
+            sortPosts(localStorage.getItem('sort_status'), localStorage.getItem('sort_direction'))
+        } else {
+            sortPosts('all', 'Newest')
+        }
     }
 
-    initApp()
+    function sortPosts(status, sort_direction) {
+        console.log('sort')
+        console.log(status, sort_direction)
+        let filteredPosts = window.posts
+        if (status !== 'all') {
+            filteredPosts = filteredPosts.filter(post => post.status === status)
+        }
+
+        if (sort_direction === 'Newest') {
+            filteredPosts = filteredPosts.sort((a, b) => b.index - a.index)
+        }
+
+        window.posts = filteredPosts;
+
+        localStorage.setItem('sort_status', status);
+        localStorage.setItem('sort_direction', sort_direction);
+    }
+
+    // initApp()
 
     const vote = async (proposalId, voteId) => {
         try {
@@ -1200,20 +1529,14 @@
 </script>
 
 <script type="module">
-    import { render } from 'preact';
-    import { useEffect, useState } from 'preact/hooks';
-    import { html } from 'htm/preact';
+    import {render} from 'preact';
+    import {useEffect, useState} from 'preact/hooks';
+    import {html} from 'htm/preact';
 
     function Loader() {
         return html`
             <div className="w-full pt-10 flex flex-col items-center gap-4">
-                <div className="animate-spin inline-block size-10" role="status" aria-label="loading">
-                    <svg className="w-full h-full fill-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                         >
-                        <path
-                            d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"></path>
-                    </svg>
-                </div>
+                <span class="loader"></span>
             </div>
         `
     }
@@ -1232,6 +1555,7 @@
                         ${status}
                     </span>
                 `
+            case 'Executed':
             case 'Active':
             case 'Succeeded':
                 return html`
@@ -1245,26 +1569,82 @@
                 `
             case 'Canceled':
             case 'Expired':
-                return html`<span class="inline-flex items-center gap-x-1 py-1 px-2 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">${status}</span>`
+                return html`<span
+                        class="inline-flex items-center gap-x-1 py-1 px-2 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">${status}</span>`
             case 'Queued':
-                return html`<span class="inline-flex items-center gap-x-1 py-1 px-2 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500">${status}</span>`
+                return html`<span
+                        class="inline-flex items-center gap-x-1 py-1 px-2 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500">${status}</span>`
         }
     }
 
-    function Post({posts, setPosts}) {
-        function cancelPost(id) {
-            // Фильтруем список постов, оставляя только те, у которых id не равен заданному
-            const updatedPosts = posts.filter(post => post.id !== id);
-            setPosts(updatedPosts)
-            toast('Success delete post!', 'info', 3000)
+    function Post({posts}) {
+        const queuePost = async (targets, values, calldatas, description) => {
+            const descriptionHash = ethers.keccak256(
+                ethers.toUtf8Bytes(description)
+            );
+            try {
+                await mini_contract.queue(
+                    targets,
+                    values,
+                    calldatas,
+                    descriptionHash
+                );
+                toast("Success queue post!", 'success');
+                getPosts().then(() => {
+                    const event = new Event('postsUpdated');
+                    document.dispatchEvent(event);
+                })
+            } catch (e) {
+                console.log(e);
+                toast("Error queue post!", 'error');
+            }
+        };
 
-            // Вы можете здесь выполнить какие-либо дополнительные действия с обновленным списком, например, обновить состояние компонента или отправить его на сервер
+        const executePost = async (targets, values, calldatas, description) => {
+            const descriptionHash = ethers.keccak256(
+                ethers.toUtf8Bytes(description)
+            );
+            try {
+                await mini_contract.execute(
+                    targets,
+                    values,
+                    calldatas,
+                    descriptionHash
+                );
+                toast("Success execute post!", 'success');
+                getPosts().then(() => {
+                    const event = new Event('postsUpdated');
+                    document.dispatchEvent(event);
+                })
+            } catch (e) {
+                console.log(e);
+                toast("Error execute post!", 'error');
+            }
+        };
 
-            console.log(`Post with id ${id} is canceled`);
-            console.log('Updated posts:', updatedPosts);
-        }
+        const cancelPost = async (targets, values, calldatas, description) => {
+            const descriptionHash = ethers.keccak256(
+                ethers.toUtf8Bytes(description)
+            );
+            try {
+                await mini_contract.cancel(
+                    targets,
+                    values,
+                    calldatas,
+                    descriptionHash
+                );
+                toast("Success cancel post!", 'success');
+                getPosts().then(() => {
+                    const event = new Event('postsUpdated');
+                    document.dispatchEvent(event);
+                })
+            } catch (e) {
+                console.log(e);
+                toast("Error cancel post!", 'error');
+            }
+        };
 
-        if (!posts) {
+        if (!posts || posts.length < 1) {
             return 'No posts'
         }
         return posts.map((post, index) => (
@@ -1276,13 +1656,14 @@
                                 ${shortenAddress(post.proposer)}
                                 ${renderBadge(post.status, post.status)}
                             </p>
-                            <p className="text-neutral-500 dark:text-gray-400">Start: ${post.vote_start} - End: ${post.vote_end}</p>
+                            <p className="text-neutral-500 dark:text-gray-400">Start: ${post.vote_start} - End:
+                                ${post.vote_end}</p>
                         </div>
                         <div className="hs-dropdown relative inline-flex">
                             <button
-                                className="hs-dropdown-toggle flex justify-center items-center size-9 text-sm font-semibold rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
-                                id="post-dropdown-${index}"
-                                type="button">
+                                    className="hs-dropdown-toggle flex justify-center items-center size-9 text-sm font-semibold rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                    id="post-dropdown-${index}"
+                                    type="button">
                                 <svg className="flex-none size-4 text-gray-600 dark:text-neutral-500"
                                      fill="none" height="24" stroke="currentColor" strokeLinecap="round"
                                      strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="24"
@@ -1295,20 +1676,21 @@
 
                             <div aria-labelledby="post-dropdown-${index}"
                                  className="hs-dropdown-menu custom-dropdown-transition duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700">
-                                ${post.proposer === walletAddress ?
-                                    html`<a
-                                       className="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
-                                        Cancel
-                                    </a>` : ""
-                                }
-                                <a className="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                   href="#">
+                                <button
+                                                    onClick=${() => cancelPost(post.extra.targets, post.extra.values, post.extra.calldatas, post.description)}
+                                                    className="w-full flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 disabled:opacity-50 disabled:pointer-events-none">
+                                                Cancel
+                                            </button>
+                                <button
+                                        onClick=${() => queuePost(post.extra.targets, post.extra.values, post.extra.calldatas, post.description)}
+                                        className="w-full flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 disabled:opacity-50 disabled:pointer-events-none">
                                     Queue
-                                </a>
-                                <a className="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                   href="#">
-                                    Distribute
-                                </a>
+                                </button>
+                                <button
+                                        onClick=${() => executePost(post.extra.targets, post.extra.values, post.extra.calldatas, post.description)}
+                                        className="w-full flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 disabled:opacity-50 disabled:pointer-events-none">
+                                    Execute
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1317,30 +1699,34 @@
                     </p>
                     <div className="flex items-center justify-between w-full mt-4">
                         <button
-                            className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-blue-500 dark:hover:border-blue-600"
-                            type="button" data-hs-overlay="#post-modal">
-                            Read full text
+                                onClick=${() => {
+                                    document.getElementById('post-modal-proposer').innerHTML = post.proposer
+                                    document.getElementById('post-modal-text').innerHTML = post.description
+                                }}
+                                className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-blue-500 dark:hover:border-blue-600"
+                                type="button" data-hs-overlay="#post-modal">
+                            Read full
                         </button>
 
                         <div className="flex items-center gap-2">
                             <button
-                                onClick=${() => vote(post.extra.proposalId, 1)}
-                                className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-teal-500 text-teal-500 hover:border-teal-400 hover:text-teal-400 disabled:opacity-50 disabled:pointer-events-none"
-                                type="button">
+                                    onClick=${() => vote(post.extra.proposalId, 1)}
+                                    className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-teal-500 text-teal-500 hover:border-teal-400 hover:text-teal-400 disabled:opacity-50 disabled:pointer-events-none"
+                                    type="button">
                                 <p>⬆️</p>
                                 <p>${post.votes.up}</p>
                             </button>
                             <button
-                                onClick=${() => vote(post.extra.proposalId, 2)}
-                                className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-500 text-gray-500 hover:border-gray-800 hover:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:hover:border-neutral-300"
-                                type="button">
+                                    onClick=${() => vote(post.extra.proposalId, 2)}
+                                    className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-500 text-gray-500 hover:border-gray-800 hover:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-400 dark:text-neutral-400 dark:hover:text-neutral-300 dark:hover:border-neutral-300"
+                                    type="button">
                                 <p>❌</p>
                                 <p>${post.votes.neutral}</p>
                             </button>
                             <button
-                                onClick=${() => vote(post.extra.proposalId, 0)}
-                                className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-red-500 text-red-500 hover:border-red-400 hover:text-red-400 disabled:opacity-50 disabled:pointer-events-none"
-                                type="button">
+                                    onClick=${() => vote(post.extra.proposalId, 0)}
+                                    className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-red-500 text-red-500 hover:border-red-400 hover:text-red-400 disabled:opacity-50 disabled:pointer-events-none"
+                                    type="button">
                                 <p>⬇️</p>
                                 <p>${post.votes.down}</p>
                             </button>
@@ -1361,7 +1747,7 @@
                     setLoading(false)
                     setPosts(window.posts)
                 })
-            }, 1000)
+            }, 3000)
         }, [])
 
         useEffect(() => {
@@ -1369,7 +1755,6 @@
         }, posts)
 
         const handlePostsUpdated = () => {
-            console.log('updated posts!')
             setPosts([...window.posts]);
         };
 
@@ -1381,11 +1766,14 @@
         }, []);
 
         if (loading) {
-            return html`<${Loader} />`
+            return html`
+                <${Loader}/>`
         }
-        return html`<${Post} posts="${posts}" setPosts="${setPosts}" />`
+        return html`
+            <${Post} posts="${posts}" setPosts="${setPosts}"/>`
     }
 
-    render(html`<${App}/>`, document.getElementById('post-feed'));
+    render(html`
+        <${App}/>`, document.getElementById('post-feed'));
 </script>
 </body>

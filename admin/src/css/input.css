@@ -13,3 +13,22 @@ body {
 .w-switch {
     @apply w-[3.25rem];
 }
+.z-80 {
+    z-index: 80;
+}
+
+div[data-hs-overlay-backdrop-template] {
+    z-index: 79;
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+main {
+    min-height: 1000px;
+}
+
+#addresses, #amounts {
+    min-height: 86px;
+    max-height: 300px;
+}

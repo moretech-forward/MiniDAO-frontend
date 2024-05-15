@@ -67,7 +67,69 @@ body {
 .toast {
     @apply fixed top-6 right-10 z-50 max-w-xs bg-white border border-gray-200 rounded-xl dark:bg-neutral-800 dark:border-neutral-700 before:absolute;
 }
+#post-page {
+    max-width: 800px;
+}
+#simple-voting-description {
+    min-height: 200px;
+}
+#navbar-offcanvas-example {
+    z-index: 60;
+}
 
+#post-modal-inner {
+    height: calc(100% - 3.5rem);
+}
 .toast-shadow {
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.25), 0 0 25px 5px #3b82f6;
+}
+
+.z-80 {
+    z-index: 80;
+}
+
+div[data-hs-overlay-backdrop-template] {
+    z-index: 79;
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+.custom-spin {
+    animation: spin 1s linear infinite !important;
+}
+
+.load-form {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: #FF3D00;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
