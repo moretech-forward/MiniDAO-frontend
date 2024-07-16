@@ -1,0 +1,147 @@
+<form
+  action="#"
+  class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+  data-tab-content="donate-erc20"
+  id="donate-erc20-form"
+>
+  <div>
+    <label class="label label-text" data-tip="hello" for="token_address"
+      >Token address</label
+    >
+    <input
+      class="input input-bordered w-full"
+      id="token_address"
+      name="token_address"
+      placeholder="Type here"
+      type="text"
+    />
+    <div id="token_name" class="mt-2 text-sm text-gray-500"></div>
+  </div>
+  <div>
+    <label class="label label-text" data-tip="hello" for="amount">Amount</label>
+    <input
+      class="input input-bordered w-full"
+      id="amount"
+      name="amount"
+      placeholder="Type here"
+      type="number"
+      min="0"
+      step="0.000001"
+    />
+  </div>
+
+  <button class="btn btn-primary mt-2">Submit</button>
+
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      const tokenAddressInput = document.getElementById("token_address");
+      const amountInput = document.getElementById("amount");
+      const tokenNameDiv = document.getElementById("token_name");
+
+      tokenAddressInput.addEventListener("input", async () => {
+        const tokenAddress = tokenAddressInput.value;
+        if (tokenAddress.length === 42 && ethers.isAddress(tokenAddress)) {
+          // Проверка адреса токена и получение имени токена
+          const tokenName = await getTokenInfo(tokenAddress);
+          if (tokenName) {
+            tokenNameDiv.textContent = `Token name: ${tokenName}`;
+          } else {
+            tokenNameDiv.textContent = "Invalid token address";
+          }
+        } else {
+          tokenNameDiv.textContent = "Enter the address of the token";
+        }
+      });
+
+      async function getTokenInfo(address) {
+        const token_connect = new ethers.Contract(address, token_abi, signer);
+        const name = await token_connect.name();
+        const symbol = await token_connect.symbol();
+        const decimals = await token_connect.decimals();
+        const balance = ethers.formatUnits(
+          await token_connect.balanceOf(walletAddress),
+          decimals,
+        );
+
+        return `${name} (${symbol}), balance: ${balance}`;
+      }
+
+      const validation = new window.JustValidate("#donate-erc20-form");
+
+      validation
+        .addField("#amount", [
+          {
+            rule: "required",
+            errorMessage: "Amount is required",
+          },
+          {
+            rule: "number",
+            errorMessage: "Amount must be a number",
+          },
+          {
+            rule: "minNumber",
+            value: 0.000001,
+            errorMessage: "Amount must be greater than 0",
+          },
+        ])
+        .addField("#token_address", [
+          {
+            rule: "required",
+            errorMessage: "Token address is required",
+          },
+          {
+            rule: "minLength",
+            value: 42,
+            errorMessage: "Token address must be 42 characters long",
+          },
+          {
+            rule: "maxLength",
+            value: 42,
+            errorMessage: "Token address must be 42 characters long",
+          },
+        ])
+        .onSuccess(async (event) => {
+          event.preventDefault();
+          addOverlay("donate-erc20-form");
+          const formData = new FormData(event.target);
+          const data = Object.fromEntries(formData);
+
+          const token_address = data.token_address;
+          const tokenContract = new ethers.Contract(
+            token_address,
+            token_abi,
+            signer,
+          );
+          const decimals = Number(await tokenContract.decimals());
+
+          const inputValueStr = data.amount.toString();
+
+          console.log(decimals);
+
+          const multipliedValue =
+            BigInt(inputValueStr.replace(".", "")) *
+            BigInt(
+              10 **
+                (decimals -
+                  (inputValueStr.split(".")[1]
+                    ? inputValueStr.split(".")[1].length
+                    : 0)),
+            );
+
+          const tx = await tokenContract.transfer(
+            treasury_address,
+            multipliedValue,
+          );
+
+          await tx.wait();
+          setTimeout(() => {
+            removeOverlay("donate-erc20-form");
+          }, 1000);
+
+          console.log("Form data:", data);
+          notyf.success("ERC20 donate successful!");
+          document.getElementById("donate-erc20-form").reset();
+        });
+    });
+  </script>
+</form>

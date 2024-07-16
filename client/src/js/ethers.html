@@ -1,0 +1,211 @@
+@@include('abi.html')
+
+<script>
+  const privateKey =
+    "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+
+  let contract_address, mini_address, token_address, treasury_address;
+  let provider, signer, walletAddress;
+  let contract, mini_contract, token_contract, treasury_contract;
+  contract_address = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+
+  const getForwardContractAddress = () => {
+    const button = document.getElementById("btn");
+    if (button) {
+      button.click();
+
+      setTimeout(() => {
+        contract_address = document.getElementById(
+          "form-output-myAddr-0",
+        ).innerHTML;
+        console.log("contract address: ", contract_address);
+      }, 500);
+    }
+  };
+
+  const initApp = async () => {
+    provider = new ethers.getDefaultProvider("http://127.0.0.1:8545/");
+    signer = await provider.getSigner();
+    contract = new ethers.Contract(contract_address, super_abi, signer);
+
+    mini_address = await contract.governor();
+    mini_contract = new ethers.Contract(mini_address, mini_abi, signer);
+
+    token_address = await contract.token();
+    token_contract = new ethers.Contract(token_address, token_abi, signer);
+
+    treasury_address = await contract.treasury();
+    treasury_contract = new ethers.Contract(
+      treasury_address,
+      treasury_abi,
+      signer,
+    );
+
+    walletAddress = await signer.getAddress();
+  };
+
+  const initForwardApp = async () => {
+    if (window.parent.ethereum == null) {
+      console.log("MetaMask not installed; using read-only defaults");
+      notyf.error("Please install MetaMask or reload page!");
+    } else {
+      provider = new ethers.BrowserProvider(window.parent.ethereum);
+    }
+    signer = await provider.getSigner();
+    contract = new ethers.Contract(contract_address, super_abi, signer);
+
+    mini_address = await contract.governor();
+    mini_contract = new ethers.Contract(mini_address, mini_abi, signer);
+
+    token_address = await contract.token();
+    token_contract = new ethers.Contract(token_address, token_abi, signer);
+
+    treasury_address = await contract.treasury();
+    treasury_contract = new ethers.Contract(
+      treasury_address,
+      treasury_abi,
+      signer,
+    );
+
+    walletAddress = await signer.getAddress();
+  };
+
+  initApp().then(() => {
+    checkConnection();
+  });
+
+  async function checkConnection() {
+    try {
+      // Проверка провайдера
+      await provider.getNetwork();
+
+      // Проверка signer (кошелька)
+      const address = await signer.getAddress();
+      if (!address) throw new Error("Wallet address not available");
+
+      // Проверка контрактов
+      const miniAddress = await contract.governor();
+      const miniContract = new ethers.Contract(miniAddress, mini_abi, signer);
+      await miniContract.address;
+
+      const tokenAddress = await contract.token();
+      const tokenContract = new ethers.Contract(
+        tokenAddress,
+        token_abi,
+        signer,
+      );
+      await tokenContract.address;
+
+      const treasuryAddress = await contract.treasury();
+      const treasuryContract = new ethers.Contract(
+        treasuryAddress,
+        treasury_abi,
+        signer,
+      );
+      await treasuryContract.address;
+
+      console.log("All connections are available");
+    } catch (error) {
+      console.error("Connection check failed:", error.message);
+      if (
+        confirm(
+          "A contract or wallet is not available. Do you want to reinitialize the application?",
+        )
+      ) {
+        await initApp();
+      }
+    }
+  }
+
+  async function fetchPosts() {
+    const posts = [];
+    let data;
+
+    console.log("ewqfe");
+    try {
+      // Check if mini_contract is initialized
+      if (!mini_contract) throw new Error("Mini contract not initialized");
+
+      data = await mini_contract.queryFilter("ProposalCreated");
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      // Retry after a delay if initialization error
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      return fetchPosts();
+    }
+
+    for (const [index, item] of data.entries()) {
+      let formattedDate;
+      const block = await provider.getBlock(item.args.voteStart);
+      if (block) {
+        const date = new Date(block.timestamp * 1000);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        formattedDate = `${day < 10 ? "0" : ""}${day}.${
+          month < 10 ? "0" : ""
+        }${month}.${year}`;
+      }
+
+      const status_id = await mini_contract.state(item.args.proposalId);
+      // againstVotes, forVotes, abstainVotes
+      const votes = await mini_contract.proposalVotes(item.args.proposalId);
+      console.log(votes);
+      const decimals = await token_contract.decimals();
+
+      const againstVotes = Number(votes[0] / 10n ** decimals); // cd
+      const forVotes = Number(votes[1] / 10n ** decimals); //cp
+      const abstainVotes = Number(votes[2] / 10n ** decimals); // cn
+
+      // const cp = Number(votes[1]);
+      // const cn = Number(votes[2]);
+      // const cd = Number(votes[0]);
+      const summ = againstVotes + forVotes + abstainVotes;
+      const countUp = formatNumber(forVotes);
+      const countNeutral = formatNumber(abstainVotes);
+      const countDown = formatNumber(againstVotes);
+
+      const token_name = await token_contract.name();
+
+      const title = await mini_contract.titles(item.args.proposalId);
+      const post = {
+        index: index,
+        title: title,
+        proposer: item.args.proposer,
+        vote_start: block ? formattedDate : item.args.voteStart,
+        time: getVotingEndText(item.args.voteEnd),
+        description: item.args.description,
+        status: getStatusNameById(status_id),
+        status_id: status_id,
+        votes: {
+          down: {
+            text: `${countDown.toString()} ${token_name}`,
+            percent: summ === 0 ? 0 : (againstVotes / summ) * 100,
+          },
+          up: {
+            text: `${countUp.toString()} ${token_name}`,
+            percent: summ === 0 ? 0 : (forVotes / summ) * 100,
+          },
+          neutral: {
+            text: `${countNeutral.toString()} ${token_name}`,
+            percent: summ === 0 ? 0 : (abstainVotes / summ) * 100,
+          },
+        },
+        extra: {
+          targets: Object.values(item.args.targets),
+          values:
+            Object.values(item.args.values).length < 1
+              ? Array(Object.values(item.args.targets).length).fill(0)
+              : Object.values(item.args.values),
+          calldatas: Object.values(item.args.calldatas),
+          proposalId: item.args.proposalId,
+        },
+      };
+
+      posts.push(post);
+      // console.log(post);
+    }
+
+    return posts.reverse();
+  }
+</script>
