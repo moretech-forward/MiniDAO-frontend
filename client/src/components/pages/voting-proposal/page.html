@@ -80,7 +80,7 @@
         <div class="mt-4 flex flex-col gap-2">
           <div
             class="relative h-10 w-full shadow"
-            @click="vote(post.extra.proposalId, 1, post.index)"
+            @click="vote(post.extra.proposalId, 1, post.index, post.status_id)"
             role="button"
           >
             <div
@@ -101,7 +101,7 @@
           </div>
           <div
             class="relative h-10 w-full shadow"
-            @click="vote(post.extra.proposalId, 0, post.index)"
+            @click="vote(post.extra.proposalId, 0, post.index, post.status_id)"
             role="button"
           >
             <div
@@ -122,7 +122,7 @@
           </div>
           <div
             class="relative h-10 w-full shadow"
-            @click="vote(post.extra.proposalId, 2, post.index)"
+            @click="vote(post.extra.proposalId, 2, post.index, post.status_id)"
             role="button"
           >
             <div
@@ -209,29 +209,36 @@
       },
       methods: {
         // VOTE
-        async vote(proposalId, voteId, post_index) {
-          try {
-            addOverlay(`post_${post_index}`);
-            // console.log(voteId);
-            // console.log(await token_contract.balanceOf(walletAddress));
+        async vote(proposalId, voteId, post_index, status_id) {
+          // Active
+          if (status_id == 1) {
+            try {
+              addOverlay(`post_${post_index}`);
+              // console.log(voteId);
+              // console.log(await token_contract.balanceOf(walletAddress));
 
-            // console.log(await mini_contract.proposalVotes(proposalId));
+              // console.log(await mini_contract.proposalVotes(proposalId));
 
-            const delegate = await token_contract.delegate(walletAddress);
-            await delegate.wait();
+              const delegate = await token_contract.delegate(walletAddress);
+              await delegate.wait();
 
-            const tx = await mini_contract.castVote(proposalId, voteId);
+              const tx = await mini_contract.castVote(proposalId, voteId);
 
-            await tx.wait();
-            setTimeout(() => {
-              reloadPosts();
-            }, 500);
-            notyf.success("Success voting!");
-          } catch (e) {
-            console.log(e);
-            notyf.error("Error voting!");
-          } finally {
-            removeOverlay(`post_${post_index}`);
+              await tx.wait();
+              setTimeout(() => {
+                reloadPosts();
+              }, 500);
+              notyf.success("Success voting!");
+            } catch (e) {
+              console.log(e);
+              notyf.error("Error voting!");
+            } finally {
+              removeOverlay(`post_${post_index}`);
+            }
+          } else {
+            notyf.error(
+              `The motion can't be voted on, it's ${getStatusNameById(status_id)}`,
+            );
           }
         },
         async loadPosts() {

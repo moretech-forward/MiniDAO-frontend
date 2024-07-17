@@ -45,6 +45,8 @@
     // Set name of DAO
     const title_dao = document.getElementById("title_dao");
     title_dao.textContent = await mini_contract.name();
+
+    console.log("Delegates to:", await token_contract.delegates(walletAddress));
   };
 
   const initForwardApp = async () => {
