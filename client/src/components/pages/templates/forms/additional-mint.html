@@ -1,57 +1,59 @@
 <form
-    action="#"
-    class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
-    data-tab-content="additional-mint"
-    id="additional-mint-form"
+  action="#"
+  class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+  data-tab-content="additional-mint"
+  id="additional-mint-form"
 >
   <button
-      class="btn mb-2"
-      onclick="additional_mint_docs.showModal()"
-      type="button"
+    class="btn mb-2"
+    onclick="additional_mint_docs.showModal()"
+    type="button"
   >
     Docs for additional mint
   </button>
   <div>
     <label class="label label-text" for="additional-mint-title">Title</label>
     <input
-        class="input input-bordered w-full"
-        id="additional-mint-title"
-        name="title"
-        placeholder="Type here"
-        type="text"
+      class="input input-bordered w-full"
+      id="additional-mint-title"
+      name="title"
+      placeholder="Type here"
+      type="text"
     />
   </div>
   <div>
     <label class="label label-text" for="additional-mint-wallet"
-    >Receiver wallet address</label
+      >Receiver wallet address</label
     >
     <input
-        class="input input-bordered w-full"
-        id="additional-mint-wallet"
-        name="wallet"
-        placeholder="Type here"
-        type="text"
+      class="input input-bordered w-full"
+      id="additional-mint-wallet"
+      name="wallet"
+      placeholder="Type here"
+      type="text"
     />
   </div>
   <div>
     <label class="label label-text" for="additional-mint-amount">Amount</label>
     <input
-        class="input input-bordered w-full"
-        id="additional-mint-amount"
-        name="amount"
-        placeholder="Type here"
-        type="number"
+      class="input input-bordered w-full"
+      id="additional-mint-amount"
+      name="amount"
+      placeholder="Type here"
+      type="number"
+      min="0"
+      step="0.01"
     />
   </div>
   <div>
     <label class="label label-text" for="additional-mint-description"
-    >Desciption</label
+      >Desciption</label
     >
     <textarea
-        class="textarea textarea-bordered w-full"
-        id="additional-mint-description"
-        name="description"
-        placeholder="Type your description"
+      class="textarea textarea-bordered w-full"
+      id="additional-mint-description"
+      name="description"
+      placeholder="Type your description"
     ></textarea>
   </div>
   <button class="btn btn-primary mt-2">Submit Minting Request</button>
@@ -95,7 +97,7 @@
         },
         {
           rule: "minNumber",
-          value: 0.01,
+          value: 0.001,
           errorMessage: "Amount must be greater than 0",
         },
       ])
@@ -114,27 +116,30 @@
         try {
           checkConnection();
           const calldata = (
-            await token_contract.mint.populateTransaction(data.wallet, data.amount)
+            await token_contract.mint.populateTransaction(
+              data.wallet,
+              ethers.parseEther(data.amount),
+            )
           ).data;
           const tx = await mini_contract.proposeWithTitle(
             [token_address],
             [0],
             [calldata],
             data.description,
-            data.title
+            data.title,
           );
           tx.wait();
           reloadPosts();
-          notyf.success('Successfully minted!')
+          notyf.success("Successfully minted!");
         } catch (error) {
-          console.log('Error: ', error)
-          notyf.error('Error mint!')
+          console.log("Error: ", error);
+          notyf.error("Error mint!");
         } finally {
           removeOverlay("additional-mint-form");
         }
 
         console.log("Form data:", data);
-        notyf.success("Minting successful")
+        notyf.success("Minting successful");
       });
   });
 </script>
