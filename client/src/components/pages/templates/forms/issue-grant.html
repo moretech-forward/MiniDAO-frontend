@@ -1,58 +1,60 @@
 <form
-    action="#"
-    class="card bg-base-100 mt-4 flex w-96 flex-col gap-2 p-6 shadow"
-    data-tab-content="issue-grant"
-    id="issue-grant-form"
+  action="#"
+  class="card bg-base-100 mt-4 flex w-96 flex-col gap-2 p-6 shadow"
+  data-tab-content="issue-grant"
+  id="issue-grant-form"
 >
   <button class="btn mb-2" onclick="issue_grant_docs.showModal()" type="button">
-    Docs for issue grant
+    Docs for issue native token grant
   </button>
   <div>
     <label class="label label-text" for="issue_grant_title">Title</label>
     <input
-        class="input input-bordered w-full"
-        id="issue_grant_title"
-        name="title"
-        placeholder="Type here"
-        type="text"
+      class="input input-bordered w-full"
+      id="issue_grant_title"
+      name="title"
+      placeholder="Type here"
+      type="text"
     />
   </div>
   <div>
     <label class="label label-text" data-tip="hello" for="issue_grant_wallet"
-    >Receiver wallet address</label
+      >Receiver wallet address</label
     >
     <input
-        class="input input-bordered w-full"
-        id="issue_grant_wallet"
-        name="wallet"
-        placeholder="Type here"
-        type="text"
+      class="input input-bordered w-full"
+      id="issue_grant_wallet"
+      name="wallet"
+      placeholder="Type here"
+      type="text"
     />
   </div>
   <div>
     <label class="label label-text" data-tip="hello" for="issue_grant_amount"
-    >Amount</label
+      >Amount</label
     >
     <input
-        class="input input-bordered w-full"
-        id="issue_grant_amount"
-        name="amount"
-        placeholder="Type here"
-        type="number"
+      class="input input-bordered w-full"
+      id="issue_grant_amount"
+      name="amount"
+      placeholder="Type here"
+      type="number"
+      min="0"
+      step="0.000001"
     />
   </div>
   <div>
     <label
-        class="label label-text"
-        data-tip="hello"
-        for="issue_grant_description"
-    >Description</label
+      class="label label-text"
+      data-tip="hello"
+      for="issue_grant_description"
+      >Description</label
     >
     <textarea
-        class="textarea textarea-bordered w-full"
-        id="issue_grant_description"
-        name="description"
-        placeholder="Type your description"
+      class="textarea textarea-bordered w-full"
+      id="issue_grant_description"
+      name="description"
+      placeholder="Type your description"
     ></textarea>
   </div>
   <button class="btn btn-primary mt-2">Submit Grant</button>
@@ -66,7 +68,7 @@
           {
             rule: "required",
             errorMessage: "Title is required",
-          }
+          },
         ])
         .addField("#issue_grant_wallet", [
           {
@@ -76,12 +78,16 @@
           {
             rule: "minLength",
             value: 42,
-            errorMessage: "Wallet address must be 42 characters long",
+            errorMessage: "Wallet address is not valid",
           },
           {
             rule: "maxLength",
             value: 42,
-            errorMessage: "Wallet address must be 42 characters long",
+            errorMessage: "Wallet address is not valid",
+          },
+          {
+            validator: (value) => ethers.isAddress(value),
+            errorMessage: "Wallet address is not valid",
           },
         ])
         .addField("#issue_grant_amount", [
@@ -95,7 +101,7 @@
           },
           {
             rule: "minNumber",
-            value: 0.01,
+            value: 0.000001,
             errorMessage: "Amount must be greater than 0",
           },
         ])
@@ -113,26 +119,36 @@
 
           try {
             checkConnection();
-            const calldata = (
-              await treasury_contract.releaseNativeToken.populateTransaction(
-                data.wallet,
-                data.amount
-              )
-            ).data;
-            const tx = await mini_contract.proposeWithTitle(
-              [treasury_address],
-              [0],
-              [calldata],
-              data.description,
-              data.title
-            );
-            tx.wait();
-            reloadPosts();
-            document.getElementById("issue-grant-form").reset();
-            notyf.success("Grant issued successfully!")
+            const balance = await provider.getBalance(treasury_address);
+            const amount = ethers.parseEther(data.amount);
+            console.log("Amount:", amount);
+            console.log("Balance:", balance);
+            if (amount <= balance) {
+              const calldata = (
+                await treasury_contract.releaseNativeToken.populateTransaction(
+                  data.wallet,
+                  amount,
+                )
+              ).data;
+              const tx = await mini_contract.proposeWithTitle(
+                [treasury_address],
+                [0],
+                [calldata],
+                data.description,
+                data.title,
+              );
+              tx.wait();
+              reloadPosts();
+              document.getElementById("issue-grant-form").reset();
+              notyf.success("Grant issued successfully!");
+            } else {
+              notyf.error(
+                "Can't create a proposal because the treasury balance is less than the grant amount!",
+              );
+            }
           } catch (error) {
             console.error("Error:", error);
-            notyf.error("Failed to issue grant!")
+            notyf.error("Failed to issue grant!");
           } finally {
             removeOverlay("issue-grant-form");
           }

@@ -4,10 +4,10 @@
   <div class="mt-6" id="votes-feed">
     <div class="flex flex-col gap-4" v-if="loading">
       <div
-          :key="n"
-          class="card card-bordered w-full rounded-xl p-6 shadow-xl"
-          id="skeleton-post"
-          v-for="n in 3"
+        :key="n"
+        class="card card-bordered w-full rounded-xl p-6 shadow-xl"
+        id="skeleton-post"
+        v-for="n in 3"
       >
         <div class="mb-6 flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -36,17 +36,17 @@
     </div>
     <div class="flex flex-col gap-4" v-else>
       <div
-          :key="post.index"
-          :id="'post_'+post.index"
-          class="card card-bordered w-full rounded-xl p-6 shadow-xl"
-          v-for="post in posts"
+        :key="post.index"
+        :id="'post_'+post.index"
+        class="card card-bordered w-full rounded-xl p-6 shadow-xl"
+        v-for="post in posts"
       >
         <div class="mb-6 flex items-center justify-between">
           <div class="flex items-center gap-2">
             <img
-                alt="logo"
-                class="h-6 w-6 rounded-full"
-                src="https://cdn.stamp.fyi/avatar/eth:{{post.proposer}}?s=40&ts=1714866711"
+              alt="logo"
+              class="h-6 w-6 rounded-full"
+              src="https://cdn.stamp.fyi/avatar/eth:{{post.proposer}}?s=40&ts=1714866711"
             />
             <div class="relative flex items-center">
               <copy-button :address="post.proposer"></copy-button>
@@ -54,88 +54,88 @@
           </div>
 
           <span
-              :class="[getStatusClass(post.status), 'rounded-full px-3 py-1 text-xs font-semibold']"
-          >{{ post.status }}</span
+            :class="[getStatusClass(post.status), 'rounded-full px-3 py-1 text-xs font-semibold']"
+            >{{ post.status }}</span
           >
         </div>
 
         <a
-            class="text-xl font-bold"
-            href="#"
-            v-if="post.title !== ''"
-            v-text="post.title"
-        >Unknown</a
+          class="text-xl font-bold"
+          href="#"
+          v-if="post.title !== ''"
+          v-text="post.title"
+          >Unknown</a
         >
         <a class="text-xl font-bold" href="#" v-if="post.title === ''"
-        >Unknown</a
+          >Unknown</a
         >
         <p
-            class="mt-2 cursor-pointer text-lg font-medium"
-            data-show-full
-            v-text="post.description"
+          class="mt-2 cursor-pointer text-lg font-medium"
+          data-show-full
+          v-text="post.description"
         >
           {{ post.description }}
         </p>
 
         <div class="mt-4 flex flex-col gap-2">
           <div
-              class="relative h-10 w-full shadow"
-              @click="vote(post.extra.proposalId, 1, post.index)"
-              role="button"
+            class="relative h-10 w-full shadow"
+            @click="vote(post.extra.proposalId, 1, post.index)"
+            role="button"
           >
             <div
-                class="bg-base-300 absolute left-0 top-0 z-0 h-full rounded"
-                :style="{width: post.votes.up.percent + '%'}"
+              class="bg-base-300 absolute left-0 top-0 z-0 h-full rounded"
+              :style="{width: post.votes.up.percent + '%'}"
             ></div>
             <div
-                class="relative z-10 flex h-full w-full items-center justify-between px-4"
+              class="relative z-10 flex h-full w-full items-center justify-between px-4"
             >
               <p class="font-medium">
                 For
                 <span class="ml-2 text-sm font-normal text-gray-600"
-                >{{ post.votes.up.text }}</span
+                  >{{ post.votes.up.text }}</span
                 >
               </p>
               <p>{{ post.votes.up.percent }}%</p>
             </div>
           </div>
           <div
-              class="relative h-10 w-full shadow"
-              @click="vote(post.extra.proposalId, 0, post.index)"
-              role="button"
+            class="relative h-10 w-full shadow"
+            @click="vote(post.extra.proposalId, 0, post.index)"
+            role="button"
           >
             <div
-                class="bg-base-300 absolute left-0 top-0 z-0 h-full rounded"
-                :style="{width: post.votes.down.percent + '%'}"
+              class="bg-base-300 absolute left-0 top-0 z-0 h-full rounded"
+              :style="{width: post.votes.down.percent + '%'}"
             ></div>
             <div
-                class="relative z-10 flex h-full w-full items-center justify-between px-4"
+              class="relative z-10 flex h-full w-full items-center justify-between px-4"
             >
               <p class="font-medium">
                 Against
                 <span class="ml-2 text-sm font-normal text-gray-600"
-                >{{ post.votes.down.text }}</span
+                  >{{ post.votes.down.text }}</span
                 >
               </p>
               <p>{{ post.votes.down.percent }}%</p>
             </div>
           </div>
           <div
-              class="relative h-10 w-full shadow"
-              @click="vote(post.extra.proposalId, 2, post.index)"
-              role="button"
+            class="relative h-10 w-full shadow"
+            @click="vote(post.extra.proposalId, 2, post.index)"
+            role="button"
           >
             <div
-                class="bg-base-300 absolute left-0 top-0 z-0 h-full rounded"
-                :style="{width: post.votes.neutral.percent + '%'}"
+              class="bg-base-300 absolute left-0 top-0 z-0 h-full rounded"
+              :style="{width: post.votes.neutral.percent + '%'}"
             ></div>
             <div
-                class="relative z-10 flex h-full w-full items-center justify-between px-4"
+              class="relative z-10 flex h-full w-full items-center justify-between px-4"
             >
               <p class="font-medium">
                 Abstain
                 <span class="ml-2 text-sm font-normal text-gray-600"
-                >{{ post.votes.neutral.text }}</span
+                  >{{ post.votes.neutral.text }}</span
                 >
               </p>
               <p>{{ post.votes.neutral.percent }}%</p>
@@ -147,14 +147,31 @@
           <p class="text-gray-500">{{ post.time }}</p>
           <div class="dropdown dropdown-top dropdown-end z-10">
             <div tabindex="0" role="button" class="btn btn-sm">
-              <svg class="fill-current text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <svg
+                class="fill-current text-primary"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
                 <path
-                    d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                  d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+                ></path>
               </svg>
             </div>
-            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box shadow-2xl border-2 border-neutral-200/60 w-52 p-2">
-              <li><a>Queue</a></li>
-              <li><a>Execute</a></li>
+            <ul
+              tabindex="0"
+              class="dropdown-content menu bg-base-100 rounded-box shadow-2xl border-2 border-neutral-200/60 w-52 p-2"
+            >
+              <li>
+                <a @click="queueProposal(post.extra, post.index)">Queue</a>
+              </li>
+              <li>
+                <a @click="executeProposal(post.extra, post.index)">Execute</a>
+              </li>
+              <li v-if="post.proposer === walletAddress">
+                <a @click="cancelProposal(post.extra, post.index)">Cancel</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -191,13 +208,14 @@
         }, 1000);
       },
       methods: {
+        // VOTE
         async vote(proposalId, voteId, post_index) {
           try {
-            addOverlay(`post_${post_index}`)
-            console.log(voteId);
-            console.log(await token_contract.balanceOf(walletAddress));
+            addOverlay(`post_${post_index}`);
+            // console.log(voteId);
+            // console.log(await token_contract.balanceOf(walletAddress));
 
-            console.log(await mini_contract.proposalVotes(proposalId));
+            // console.log(await mini_contract.proposalVotes(proposalId));
 
             const delegate = await token_contract.delegate(walletAddress);
             await delegate.wait();
@@ -213,7 +231,7 @@
             console.log(e);
             notyf.error("Error voting!");
           } finally {
-            removeOverlay(`post_${post_index}`)
+            removeOverlay(`post_${post_index}`);
           }
         },
         async loadPosts() {
@@ -248,6 +266,76 @@
 
         getStatusClass(status) {
           return `rounded-full px-3 py-1 text-xs font-semibold ${this.colorMap[status]}`;
+        },
+
+        // QUEUE
+        async queueProposal(post_extra, post_index) {
+          try {
+            addOverlay(`post_${post_index}`);
+            const tx = await mini_contract.queue(
+              post_extra.targets,
+              post_extra.values,
+              post_extra.calldatas,
+              post_extra.descriptionHash,
+            );
+            await tx.wait();
+            notyf.success("Proposal queued successfully!");
+            setTimeout(() => {
+              reloadPosts();
+            }, 500);
+          } catch (e) {
+            console.log(e);
+            notyf.error("Error queuing proposal!");
+          } finally {
+            removeOverlay(`post_${post_index}`);
+          }
+        },
+        // EXECUTE
+        async executeProposal(post_extra, post_index) {
+          try {
+            addOverlay(`post_${post_index}`);
+            const tx = await mini_contract.execute(
+              post_extra.targets,
+              post_extra.values,
+              post_extra.calldatas,
+              post_extra.descriptionHash,
+            );
+            await tx.wait();
+            notyf.success("Proposal executed successfully!");
+            setTimeout(() => {
+              reloadPosts();
+            }, 500);
+          } catch (e) {
+            console.log(e);
+            notyf.error("Error executing proposal!");
+          } finally {
+            removeOverlay(`post_${post_index}`);
+          }
+        },
+        // CANCEL
+        async cancelProposal(post_extra, post_index) {
+          try {
+            addOverlay(`post_${post_index}`);
+
+            console.log(post_extra);
+
+            const tx = await mini_contract.cancel(
+              post_extra.targets,
+              post_extra.values,
+              post_extra.calldatas,
+              post_extra.descriptionHash,
+            );
+            await tx.wait();
+            notyf.success("Proposal canceled successfully!");
+            setTimeout(() => {
+              reloadPosts();
+            }, 500);
+          } catch (e) {
+            console.log(e);
+            notyf.error("Error canceling proposal!");
+          } finally {
+            removeOverlay(`post_${post_index}`);
+          }
         },
       },
     });

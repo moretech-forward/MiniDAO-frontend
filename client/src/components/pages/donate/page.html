@@ -1,17 +1,20 @@
 <section class="page" id="donate">
   <div class="mt-8 flex flex-col items-center" data-tabs-container>
     <p
-        class="mb-6 flex max-w-lg flex-col items-center gap-2 text-center"
-        id="app2"
+      class="mb-6 flex max-w-lg flex-col items-center gap-2 text-center"
+      id="app2"
     >
       To donate money to us you can simply send ERC20 tokens and native network
       tokens to the address:
       <copy-button :address="treasury_address"></copy-button>
+      <span v-if="eth_balance !== null"
+        >Native Token Balance: {{ eth_balance }}</span
+      >
     </p>
 
     <div class="tabs tabs-boxed" data-tabs-nav id="donate-tabs" role="tablist">
       <a class="tab tab-active" data-tab-target="donate-native" role="tab"
-      >Native</a
+        >Native</a
       >
       <a class="tab" data-tab-target="donate-erc20" role="tab">ERC20</a>
     </div>
@@ -22,25 +25,31 @@
 
 @@include('../voting-proposal/copy-button.html')
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const app = new Vue({
-            el: "#app2",
-            data: {
-                treasury_address: "",
-            },
-            created() {
-                this.checkTreasuryAddress();
-            },
-            methods: {
-                checkTreasuryAddress() {
-                    const interval = setInterval(() => {
-                        if (treasury_address) {
-                            this.treasury_address = treasury_address;
-                            clearInterval(interval); // Stop checking once the address is set
-                        }
-                    }, 1000); // Check every second
-                },
-            },
-        });
+  document.addEventListener("DOMContentLoaded", () => {
+    const app = new Vue({
+      el: "#app2",
+      data: {
+        treasury_address: "",
+        eth_balance: null,
+      },
+      created() {
+        this.checkTreasuryAddress();
+      },
+      methods: {
+        checkTreasuryAddress() {
+          const interval = setInterval(() => {
+            if (treasury_address) {
+              this.treasury_address = treasury_address;
+              this.fetchEthBalance(treasury_address);
+              clearInterval(interval);
+            }
+          }, 1000);
+        },
+        async fetchEthBalance(address) {
+          const balance = await provider.getBalance(address);
+          this.eth_balance = ethers.formatEther(balance);
+        },
+      },
     });
+  });
 </script>

@@ -42,6 +42,9 @@
     );
 
     walletAddress = await signer.getAddress();
+    // Set name of DAO
+    const title_dao = document.getElementById("title_dao");
+    title_dao.textContent = await mini_contract.name();
   };
 
   const initForwardApp = async () => {
@@ -153,9 +156,9 @@
       console.log(votes);
       const decimals = await token_contract.decimals();
 
-      const againstVotes = Number(votes[0]); // cd
-      const forVotes = Number(votes[1]); //cp
-      const abstainVotes = Number(votes[2]); // cn
+      const againstVotes = Number(votes[0] / 10n ** decimals); // cd
+      const forVotes = Number(votes[1] / 10n ** decimals); //cp
+      const abstainVotes = Number(votes[2] / 10n ** decimals); // cn
 
       // const cp = Number(votes[1]);
       // const cn = Number(votes[2]);
@@ -198,6 +201,9 @@
               ? Array(Object.values(item.args.targets).length).fill(0)
               : Object.values(item.args.values),
           calldatas: Object.values(item.args.calldatas),
+          descriptionHash: ethers.keccak256(
+            ethers.toUtf8Bytes(item.args.description),
+          ),
           proposalId: item.args.proposalId,
         },
       };

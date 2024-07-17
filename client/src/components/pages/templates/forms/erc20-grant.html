@@ -1,69 +1,69 @@
 <form
-    action="#"
-    class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
-    data-tab-content="erc20-grant"
-    id="erc20-grant-form"
+  action="#"
+  class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+  data-tab-content="erc20-grant"
+  id="erc20-grant-form"
 >
   <button
-      class="btn mb-2"
-      onclick="pay_erc20_grant_docs.showModal()"
-      type="button"
+    class="btn mb-2"
+    onclick="pay_erc20_grant_docs.showModal()"
+    type="button"
   >
-    Docs for pay erc20 grant
+    Docs for pay ERC20 grant
   </button>
   <div>
     <label class="label label-text" for="erc20-grant-title">Title</label>
     <input
-        class="input input-bordered w-full"
-        id="erc20-grant-title"
-        name="title"
-        placeholder="Type here"
-        type="text"
+      class="input input-bordered w-full"
+      id="erc20-grant-title"
+      name="title"
+      placeholder="Type here"
+      type="text"
     />
   </div>
   <div>
     <label class="label label-text" for="erc20-grant-wallet"
-    >Receiver wallet address</label
+      >Receiver wallet address</label
     >
     <input
-        class="input input-bordered w-full"
-        id="erc20-grant-wallet"
-        name="wallet"
-        placeholder="Type here"
-        type="text"
+      class="input input-bordered w-full"
+      id="erc20-grant-wallet"
+      name="wallet"
+      placeholder="Type here"
+      type="text"
     />
   </div>
   <div>
     <label class="label label-text" for="erc20-grant-amount">Amount</label>
     <input
-        class="input input-bordered w-full"
-        id="erc20-grant-amount"
-        name="amount"
-        placeholder="Type here"
-        type="number"
+      class="input input-bordered w-full"
+      id="erc20-grant-amount"
+      name="amount"
+      placeholder="Type here"
+      type="number"
     />
   </div>
   <div>
     <label class="label label-text" for="erc20-grant-token_address"
-    >Token address</label
+      >Token address</label
     >
     <input
-        class="input input-bordered w-full"
-        id="erc20-grant-token_address"
-        name="token_address"
-        placeholder="Type here"
-        type="text"
+      class="input input-bordered w-full"
+      id="erc20-grant-token_address"
+      name="token_address"
+      placeholder="Type here"
+      type="text"
     />
   </div>
   <div>
     <label class="label label-text" for="erc20-grant-description"
-    >Description</label
+      >Description</label
     >
     <textarea
-        class="textarea textarea-bordered w-full"
-        id="erc20-grant-description"
-        name="description"
-        placeholder="Type your description"
+      class="textarea textarea-bordered w-full"
+      id="erc20-grant-description"
+      name="description"
+      placeholder="Type your description"
     ></textarea>
   </div>
   <button class="btn btn-primary mt-2">Submit Grant</button>
@@ -139,11 +139,11 @@
           const data = Object.fromEntries(formData);
 
           try {
-            document.getElementById('erc20-grant-form').reset();
-            notyf.success("Paying erc20 grant successfuly!")
+            document.getElementById("erc20-grant-form").reset();
+            notyf.success("Paying erc20 grant successfuly!");
           } catch (error) {
-            console.log('Error: ', error)
-            notyf.error("Paying erc20 grant error!")
+            console.log("Error: ", error);
+            notyf.error("Paying erc20 grant error!");
           } finally {
             removeOverlay("erc20-grant-form");
           }
