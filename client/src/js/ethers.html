@@ -153,9 +153,9 @@
       console.log(votes);
       const decimals = await token_contract.decimals();
 
-      const againstVotes = Number(votes[0] / 10n ** decimals); // cd
-      const forVotes = Number(votes[1] / 10n ** decimals); //cp
-      const abstainVotes = Number(votes[2] / 10n ** decimals); // cn
+      const againstVotes = Number(votes[0]); // cd
+      const forVotes = Number(votes[1]); //cp
+      const abstainVotes = Number(votes[2]); // cn
 
       // const cp = Number(votes[1]);
       // const cn = Number(votes[2]);
@@ -203,7 +203,7 @@
       };
 
       posts.push(post);
-      // console.log(post);
+      console.log(post);
     }
 
     return posts.reverse();
