@@ -1,15 +1,29 @@
 <div class="flex items-center justify-between">
   <p class="text-3xl font-medium">Proposals</p>
   <div class="flex items-center gap-2">
-    <button class="btn" onclick="reloadPosts()">
-      Update <span class="-ml-1 hidden sm:block">posts</span>
-    </button>
+    <div class="dropdown dropdown-end">
+      <div class="btn m-1" role="button" tabindex="0">
+        Actions
+      </div>
+      <div
+          class="dropdown-content menu bg-base-100 rounded-box z-20 border-2 border-neutral-600 w-52 p-2 shadow"
+          tabindex="0"
+      >
+        <button onclick="delegate()" class="btn btn-accent mb-4">
+          Delegate
+        </button>
+
+        <button class="btn btn-accent" onclick="reloadPosts()">
+          Update posts
+        </button>
+      </div>
+    </div>
     <div class="dropdown dropdown-end" id="filter-dropdown">
       <div class="btn m-1" id="filter-button" role="button" tabindex="0">
         Filters
       </div>
       <div
-          class="dropdown-content menu bg-base-100 rounded-box z-20 w-52 p-2 shadow"
+          class="dropdown-content menu bg-base-100 rounded-box z-20 border-2 border-neutral-600 w-52 p-2 shadow"
           tabindex="0"
       >
         <input
@@ -24,6 +38,22 @@
     </div>
   </div>
 </div>
+
+<script>
+  const delegate = async () => {
+    try {
+      addOverlay("app")
+      const delegate = await token_contract.delegate(walletAddress);
+      await delegate.wait();
+      notyf.success("Success delegate tokens! You can vote!")
+    } catch (e) {
+      console.log(e)
+      notyf.error("Failed to delegate tokens!")
+    } finally {
+      removeOverlay("app")
+    }
+  }
+</script>
 
 <script>
     // search

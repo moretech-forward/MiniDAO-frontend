@@ -218,10 +218,6 @@
               // console.log(await token_contract.balanceOf(walletAddress));
 
               // console.log(await mini_contract.proposalVotes(proposalId));
-
-              const delegate = await token_contract.delegate(walletAddress);
-              await delegate.wait();
-
               const tx = await mini_contract.castVote(proposalId, voteId);
 
               await tx.wait();
