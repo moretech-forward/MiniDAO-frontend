@@ -40,7 +40,8 @@
       id="nft721-grant-token_id"
       name="token_id"
       placeholder="Type here token ID"
-      type="text"
+      type="number"
+      min="0"
     />
   </div>
   <div>
@@ -87,12 +88,12 @@
           {
             rule: "minLength",
             value: 42,
-            errorMessage: "Wallet address must be 42 characters long",
+            errorMessage: "Invalid wallet address",
           },
           {
             rule: "maxLength",
             value: 42,
-            errorMessage: "Wallet address must be 42 characters long",
+            errorMessage: "Invalid wallet address",
           },
         ])
         .addField("#nft721-grant-token_id", [
@@ -115,25 +116,30 @@
           {
             rule: "minLength",
             value: 42,
-            errorMessage: "Token address must be 42 characters long",
+            errorMessage: "Invalid token address",
           },
           {
             rule: "maxLength",
             value: 42,
-            errorMessage: "Token address must be 42 characters long",
+            errorMessage: "Invalid token address",
           },
         ])
         .onSuccess((event) => {
           event.preventDefault();
-          addOverlay("nft721-grant-form");
           const formData = new FormData(event.target);
           const data = Object.fromEntries(formData);
-          setTimeout(() => {
-            removeOverlay("nft721-grant-form");
-          }, 1000);
 
-          console.log("Form data:", data);
-          notyf.error("Paying nft721 grant successfuly!");
+          try {
+            checkConnection();
+            addOverlay("nft721-grant-form");
+            notyf.error("Paying nft721 grant successfuly!");
+            reloadPosts();
+          } catch (error) {
+            notyf.error("Paying nft721 grant successfuly!");
+            console.log(error);
+          } finally {
+            removeOverlay("nft721-grant-form");
+          }
         });
     });
   </script>

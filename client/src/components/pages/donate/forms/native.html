@@ -39,25 +39,30 @@
           },
         ])
         .onSuccess(async (event) => {
+          checkConnection();
           event.preventDefault();
-          addOverlay("donate-native-form");
+
           const formData = new FormData(event.target);
           const data = Object.fromEntries(formData);
+          try {
+            checkConnection();
+            addOverlay("donate-native-form");
+            console.log(treasury_address);
+            const tx = await signer.sendTransaction({
+              to: treasury_address,
+              value: ethers.parseEther(data.amount),
+            });
+            await tx.wait();
 
-          const tx = await signer.sendTransaction({
-            to: treasury_address,
-            value: ethers.parseEther(data.amount),
-          });
-
-          await tx.wait();
-
-          setTimeout(() => {
+            notyf.success("Native donate successfuly!");
+            document.getElementById("donate-native-form").reset();
+            fetchDaoBalance();
+          } catch (error) {
+            notyf.error("Error native donate!");
+            console.log(error);
+          } finally {
             removeOverlay("donate-native-form");
-          }, 1000);
-
-          console.log("Form data:", data);
-          notyf.success("Native donate successfuly!");
-          document.getElementById("donate-native-form").reset();
+          }
         });
     });
   </script>

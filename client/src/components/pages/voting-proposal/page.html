@@ -145,7 +145,10 @@
 
         <div class="flex items-center justify-between mt-4">
           <p class="text-gray-500">{{ post.time }}</p>
-          <div class="dropdown dropdown-top dropdown-end z-10">
+          <div
+            v-if="post.status_id === 0 || post.status_id === 4 || post.status_id === 5"
+            class="dropdown dropdown-top dropdown-end z-10"
+          >
             <div tabindex="0" role="button" class="btn btn-sm">
               <svg
                 class="fill-current text-primary"
@@ -163,13 +166,15 @@
               tabindex="0"
               class="dropdown-content menu bg-base-100 rounded-box shadow-2xl border-2 border-neutral-200/60 w-52 p-2"
             >
-              <li>
+              <li v-if="post.status_id === 4">
                 <a @click="queueProposal(post.extra, post.index)">Queue</a>
               </li>
-              <li>
+              <li v-if="post.status_id === 5">
                 <a @click="executeProposal(post.extra, post.index)">Execute</a>
               </li>
-              <li v-if="post.proposer === walletAddress">
+              <li
+                v-if="post.proposer === walletAddress && post.status_id === 0"
+              >
                 <a @click="cancelProposal(post.extra, post.index)">Cancel</a>
               </li>
             </ul>
@@ -211,7 +216,7 @@
         // VOTE
         async vote(proposalId, voteId, post_index, status_id) {
           // Active
-          if (status_id == 1) {
+          if (status_id === 1) {
             const delefates_addr =
               await token_contract.delegates(walletAddress);
             if (delefates_addr != ethers.ZeroAddress) {
@@ -261,7 +266,7 @@
 
           if (search_key) {
             this.posts = this.posts.filter((post) =>
-              post.description.toLowerCase().includes(search_key.toLowerCase()),
+              post.title.toLowerCase().includes(search_key.toLowerCase()),
             );
           }
 

@@ -41,6 +41,8 @@
       name="amount"
       placeholder="Type here"
       type="number"
+      min="0"
+      step="0.000001"
     />
   </div>
   <div>
@@ -55,6 +57,7 @@
       type="text"
     />
   </div>
+  <div id="token_info" class="mt-2 text-sm text-gray-500"></div>
   <div>
     <label class="label label-text" for="erc20-grant-description"
       >Description</label
@@ -70,6 +73,40 @@
 
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
+      const tokenAddressInput = document.getElementById(
+        "erc20-grant-token_address",
+      );
+      let decimals;
+      let balance;
+
+      tokenAddressInput.addEventListener("input", async () => {
+        const tokenInfoDiv = document.getElementById("token_info");
+        const tokenAddress = tokenAddressInput.value;
+        if (tokenAddress.length === 42 && ethers.isAddress(tokenAddress)) {
+          // Проверка адреса токена и получение имени токена
+          const tokenInfo = await getTokenInfoForGrant(tokenAddress);
+          console.log(tokenInfo);
+          if (tokenInfo) {
+            tokenInfoDiv.textContent = tokenInfo;
+          } else {
+            tokenInfoDiv.textContent = "Invalid token address";
+          }
+        } else {
+          tokenInfoDiv.textContent = "Enter the address of the token";
+        }
+      });
+
+      async function getTokenInfoForGrant(address) {
+        const token_connect = new ethers.Contract(address, token_abi, signer);
+        const name = await token_connect.name();
+        const symbol = await token_connect.symbol();
+        decimals = await token_connect.decimals();
+        balance = await token_connect.balanceOf(treasury_address);
+        const form_balance = ethers.formatUnits(balance, decimals);
+
+        return `${name} (${symbol}), Tresuary balance: ${form_balance}`;
+      }
+
       const validation = new window.JustValidate("#erc20-grant-form");
 
       validation
@@ -87,27 +124,18 @@
           {
             rule: "minLength",
             value: 42,
-            errorMessage: "Wallet address must be 42 characters long",
+            errorMessage: "Invalid wallet address",
           },
           {
             rule: "maxLength",
             value: 42,
-            errorMessage: "Wallet address must be 42 characters long",
+            errorMessage: "Invalid wallet address",
           },
         ])
         .addField("#erc20-grant-amount", [
           {
             rule: "required",
             errorMessage: "Amount is required",
-          },
-          {
-            rule: "number",
-            errorMessage: "Amount must be a number",
-          },
-          {
-            rule: "minNumber",
-            value: 0.01,
-            errorMessage: "Amount must be greater than 0",
           },
         ])
         .addField("#erc20-grant-description", [
@@ -124,26 +152,61 @@
           {
             rule: "minLength",
             value: 42,
-            errorMessage: "Token address must be 42 characters long",
+            errorMessage: "Invalid token address",
           },
           {
             rule: "maxLength",
             value: 42,
-            errorMessage: "Token address must be 42 characters long",
+            errorMessage: "Invalid token address",
           },
         ])
-        .onSuccess((event) => {
+        .onSuccess(async (event) => {
           event.preventDefault();
           addOverlay("erc20-grant-form");
           const formData = new FormData(event.target);
           const data = Object.fromEntries(formData);
 
           try {
-            document.getElementById("erc20-grant-form").reset();
-            notyf.success("Paying erc20 grant successfuly!");
+            console.log(balance);
+            checkConnection();
+
+            const inputValueStr = data.amount.toString();
+            const multipliedValue =
+              BigInt(inputValueStr.replace(".", "")) *
+              BigInt(
+                10 **
+                  (Number(decimals) -
+                    (inputValueStr.split(".")[1]
+                      ? inputValueStr.split(".")[1].length
+                      : 0)),
+              );
+            if (multipliedValue <= balance) {
+              const calldata = (
+                await treasury_contract.releaseERC20Token.populateTransaction(
+                  data.wallet,
+                  multipliedValue,
+                  data.token_address,
+                )
+              ).data;
+              const tx = await mini_contract.proposeWithTitle(
+                [treasury_address],
+                [0],
+                [calldata],
+                data.description,
+                data.title,
+              );
+              await tx.wait();
+              document.getElementById("erc20-grant-form").reset();
+              notyf.success("Paying ERC20 grant successfuly!");
+              reloadPosts();
+            } else {
+              notyf.error(
+                "Can't create a proposal because the treasury balance is less than the grant amount!",
+              );
+            }
           } catch (error) {
             console.log("Error: ", error);
-            notyf.error("Paying erc20 grant error!");
+            notyf.error("Paying ERC20 grant error!");
           } finally {
             removeOverlay("erc20-grant-form");
           }

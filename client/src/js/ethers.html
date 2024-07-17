@@ -181,7 +181,7 @@
         time: getVotingEndText(item.args.voteEnd),
         description: item.args.description,
         status: getStatusNameById(status_id),
-        status_id: status_id,
+        status_id: Number(status_id),
         votes: {
           down: {
             text: `${countDown.toString()} ${token_name}`,

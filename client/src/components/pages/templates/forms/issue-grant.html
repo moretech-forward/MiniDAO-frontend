@@ -137,10 +137,10 @@
                 data.description,
                 data.title,
               );
-              tx.wait();
-              reloadPosts();
+              await tx.wait();
               document.getElementById("issue-grant-form").reset();
               notyf.success("Grant issued successfully!");
+              reloadPosts();
             } else {
               notyf.error(
                 "Can't create a proposal because the treasury balance is less than the grant amount!",

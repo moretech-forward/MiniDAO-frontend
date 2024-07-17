@@ -101,46 +101,58 @@
           },
         ])
         .onSuccess(async (event) => {
+          checkConnection();
           event.preventDefault();
-          addOverlay("donate-erc20-form");
           const formData = new FormData(event.target);
           const data = Object.fromEntries(formData);
 
-          const token_address = data.token_address;
-          const tokenContract = new ethers.Contract(
-            token_address,
-            token_abi,
-            signer,
-          );
-          const decimals = Number(await tokenContract.decimals());
-
-          const inputValueStr = data.amount.toString();
-
-          console.log(decimals);
-
-          const multipliedValue =
-            BigInt(inputValueStr.replace(".", "")) *
-            BigInt(
-              10 **
-                (decimals -
-                  (inputValueStr.split(".")[1]
-                    ? inputValueStr.split(".")[1].length
-                    : 0)),
+          try {
+            addOverlay("donate-erc20-form");
+            const token_address = data.token_address;
+            const tokenContract = new ethers.Contract(
+              token_address,
+              token_abi,
+              signer,
             );
+            const decimals = Number(await tokenContract.decimals());
 
-          const tx = await tokenContract.transfer(
-            treasury_address,
-            multipliedValue,
-          );
+            const inputValueStr = data.amount.toString();
 
-          await tx.wait();
-          setTimeout(() => {
+            console.log(decimals);
+
+            const multipliedValue =
+              BigInt(inputValueStr.replace(".", "")) *
+              BigInt(
+                10 **
+                  (decimals -
+                    (inputValueStr.split(".")[1]
+                      ? inputValueStr.split(".")[1].length
+                      : 0)),
+              );
+
+            const wallet_balance = await tokenContract.balanceOf(walletAddress);
+            console.log("Wallet Balance", wallet_balance);
+            console.log(multipliedValue);
+            if (wallet_balance > multipliedValue) {
+              const tx = await tokenContract.transfer(
+                treasury_address,
+                multipliedValue,
+              );
+
+              await tx.wait();
+
+              notyf.success("ERC20 donate successful!");
+              document.getElementById("donate-erc20-form").reset();
+              fetchDaoBalance();
+            } else {
+              notyf.error("Insufficient balance!");
+            }
+          } catch (error) {
+            console.log(error);
+            notyf.error("Error ERC20 donate!");
+          } finally {
             removeOverlay("donate-erc20-form");
-          }, 1000);
-
-          console.log("Form data:", data);
-          notyf.success("ERC20 donate successful!");
-          document.getElementById("donate-erc20-form").reset();
+          }
         });
     });
   </script>

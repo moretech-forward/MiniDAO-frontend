@@ -10,6 +10,10 @@
       <span v-if="eth_balance !== null"
         >Native Token Balance: {{ eth_balance }}</span
       >
+      <span v-if="dao_balance !== null && dao_token !== null"
+        >{{ dao_token }}: {{ dao_balance }}</span
+      >
+      <copy-button :address="token_address"></copy-button>
     </p>
 
     <div class="tabs tabs-boxed" data-tabs-nav id="donate-tabs" role="tablist">
@@ -31,6 +35,8 @@
       data: {
         treasury_address: "",
         eth_balance: null,
+        dao_token: null,
+        dao_balance: null,
       },
       created() {
         this.checkTreasuryAddress();
@@ -40,16 +46,27 @@
           const interval = setInterval(() => {
             if (treasury_address) {
               this.treasury_address = treasury_address;
-              this.fetchEthBalance(treasury_address);
+              this.fetchDaoBalance(treasury_address);
               clearInterval(interval);
             }
           }, 1000);
         },
-        async fetchEthBalance(address) {
+        async fetchDaoBalance(address) {
           const balance = await provider.getBalance(address);
           this.eth_balance = ethers.formatEther(balance);
+          const token_name = await token_contract.name();
+          const token_symbol = await token_contract.symbol();
+          this.dao_token = token_name + " (" + token_symbol + ")";
+          const decimals = await token_contract.decimals();
+          this.dao_balance = ethers.formatUnits(
+            await token_contract.balanceOf(address),
+            decimals,
+          );
         },
       },
     });
+    window.fetchDaoBalance = function () {
+      app.fetchDaoBalance(treasury_address);
+    };
   });
 </script>
