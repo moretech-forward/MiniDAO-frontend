@@ -99,6 +99,10 @@
             value: 42,
             errorMessage: "Wallet address is not valid",
           },
+          {
+            validator: (value) => ethers.isAddress(value),
+            errorMessage: "Invalid token address",
+          },
         ])
         .onSuccess(async (event) => {
           checkConnection();

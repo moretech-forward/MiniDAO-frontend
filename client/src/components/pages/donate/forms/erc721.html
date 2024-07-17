@@ -1,0 +1,117 @@
+<form
+  action="#"
+  class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+  data-tab-content="donate-erc721"
+  id="donate-erc721-form"
+>
+  <div>
+    <label class="label label-text" data-tip="hello" for="nft_address"
+      >Token address</label
+    >
+    <input
+      class="input input-bordered w-full"
+      id="nft_address"
+      name="nft_address"
+      placeholder="Type here"
+      type="text"
+    />
+    <div id="donate_nft_info" class="mt-2 text-sm text-gray-500"></div>
+  </div>
+  <div>
+    <label class="label label-text" data-tip="hello" for="donate_id"
+      >Token ID</label
+    >
+    <input
+      class="input input-bordered w-full"
+      id="donate_id"
+      name="donate_id"
+      placeholder="Type here"
+      type="number"
+      min="0"
+    />
+  </div>
+
+  <button class="btn btn-primary mt-2">Submit</button>
+
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      const tokenAddressInput = document.getElementById("nft_address");
+      const tokenNameDiv = document.getElementById("donate_nft_info");
+
+      tokenAddressInput.addEventListener("input", async () => {
+        const tokenAddress = tokenAddressInput.value;
+        if (tokenAddress.length === 42 && ethers.isAddress(tokenAddress)) {
+          // Проверка адреса токена и получение имени токена
+          const tokenName = await getNFTTokenInfo(tokenAddress);
+          if (tokenName) {
+            tokenNameDiv.textContent = `Token name: ${tokenName}`;
+          } else {
+            tokenNameDiv.textContent = "Invalid token address";
+          }
+        } else {
+          tokenNameDiv.textContent = "Enter the address of the token";
+        }
+      });
+
+      async function getNFTTokenInfo(address) {
+        const token_connect = new ethers.Contract(address, token_abi, signer);
+        const name = await token_connect.name();
+        const symbol = await token_connect.symbol();
+        const balance = await token_connect.balanceOf(walletAddress);
+        return `${name} (${symbol}), balance: ${balance}`;
+      }
+
+      const validation = new window.JustValidate("#donate-erc721-form");
+
+      validation
+        .addField("#donate_id", [
+          {
+            rule: "required",
+            errorMessage: "Token ID is required",
+          },
+        ])
+        .addField("#nft_address", [
+          {
+            rule: "required",
+            errorMessage: "Token address is required",
+          },
+          {
+            validator: (value) => ethers.isAddress(value),
+            errorMessage: "Invalid token address",
+          },
+        ])
+        .onSuccess(async (event) => {
+          checkConnection();
+          event.preventDefault();
+          const formData = new FormData(event.target);
+          const data = Object.fromEntries(formData);
+
+          try {
+            addOverlay("donate-erc721-form");
+            const token_address = data.nft_address;
+            const tokenContract = new ethers.Contract(
+              token_address,
+              erc721_abi,
+              signer,
+            );
+            //0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+            const tx = await tokenContract.safeTransferFrom(
+              walletAddress,
+              treasury_address,
+              data.donate_id,
+            );
+
+            await tx.wait();
+
+            notyf.success("erc721 donate successful!");
+            document.getElementById("donate-erc721-form").reset();
+          } catch (error) {
+            console.log(error);
+            notyf.error("Error erc721 donate!");
+          } finally {
+            removeOverlay("donate-erc721-form");
+          }
+        });
+    });
+  </script>
+</form>

@@ -92,7 +92,7 @@
             tokenInfoDiv.textContent = "Invalid token address";
           }
         } else {
-          tokenInfoDiv.textContent = "Enter the address of the token";
+          tokenInfoDiv.textContent = "Invalid token address";
         }
       });
 
@@ -131,6 +131,10 @@
             value: 42,
             errorMessage: "Invalid wallet address",
           },
+          {
+            validator: (value) => ethers.isAddress(value),
+            errorMessage: "Invalid wallet address",
+          },
         ])
         .addField("#erc20-grant-amount", [
           {
@@ -157,6 +161,10 @@
           {
             rule: "maxLength",
             value: 42,
+            errorMessage: "Invalid token address",
+          },
+          {
+            validator: (value) => ethers.isAddress(value),
             errorMessage: "Invalid token address",
           },
         ])

@@ -78,16 +78,16 @@
           {
             rule: "minLength",
             value: 42,
-            errorMessage: "Wallet address is not valid",
+            errorMessage: "Invalid wallet address",
           },
           {
             rule: "maxLength",
             value: 42,
-            errorMessage: "Wallet address is not valid",
+            errorMessage: "Invalid wallet address",
           },
           {
             validator: (value) => ethers.isAddress(value),
-            errorMessage: "Wallet address is not valid",
+            errorMessage: "Invalid wallet address",
           },
         ])
         .addField("#issue_grant_amount", [

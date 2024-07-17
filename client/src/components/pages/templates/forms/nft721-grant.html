@@ -55,6 +55,7 @@
       placeholder="Type here"
       type="text"
     />
+    <div id="nft_info" class="mt-2 text-sm text-gray-500"></div>
   </div>
   <div>
     <label class="label label-text" for="nft721-grant-description"
@@ -71,6 +72,36 @@
 
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
+      const tokenAddressInput = document.getElementById(
+        "nft721-grant-token_address",
+      );
+
+      tokenAddressInput.addEventListener("input", async () => {
+        const tokenInfoDiv = document.getElementById("nft_info");
+        const tokenAddress = tokenAddressInput.value;
+        if (tokenAddress.length === 42 && ethers.isAddress(tokenAddress)) {
+          // Проверка адреса токена и получение имени токена
+          const tokenInfo = await getTokenInfoForGrant(tokenAddress);
+          console.log(tokenInfo);
+          if (tokenInfo) {
+            tokenInfoDiv.innerHTML = tokenInfo;
+          } else {
+            tokenInfoDiv.innerHTML = "Invalid token address";
+          }
+        } else {
+          tokenInfoDiv.innerHTML = "Invalid token address";
+        }
+      });
+
+      async function getTokenInfoForGrant(address) {
+        const token_connect = new ethers.Contract(address, token_abi, signer);
+        const name = await token_connect.name();
+        const symbol = await token_connect.symbol();
+        const balance = await token_connect.balanceOf(treasury_address);
+
+        return `${name} (${symbol}), Tresuary balance: ${balance}`;
+      }
+
       const validation = new window.JustValidate("#nft721-grant-form");
 
       validation
@@ -93,6 +124,10 @@
           {
             rule: "maxLength",
             value: 42,
+            errorMessage: "Invalid wallet address",
+          },
+          {
+            validator: (value) => ethers.isAddress(value),
             errorMessage: "Invalid wallet address",
           },
         ])
@@ -123,8 +158,12 @@
             value: 42,
             errorMessage: "Invalid token address",
           },
+          {
+            validator: (value) => ethers.isAddress(value),
+            errorMessage: "Invalid token address",
+          },
         ])
-        .onSuccess((event) => {
+        .onSuccess(async (event) => {
           event.preventDefault();
           const formData = new FormData(event.target);
           const data = Object.fromEntries(formData);
@@ -132,10 +171,25 @@
           try {
             checkConnection();
             addOverlay("nft721-grant-form");
-            notyf.error("Paying nft721 grant successfuly!");
+            const calldata = (
+              await treasury_contract.releaseERC721Token.populateTransaction(
+                data.wallet,
+                data.token_id,
+                data.token_address,
+              )
+            ).data;
+            const tx = await mini_contract.proposeWithTitle(
+              [treasury_address],
+              [0],
+              [calldata],
+              data.description,
+              data.title,
+            );
+            await tx.wait();
+            notyf.success("Paying nft721 grant successfuly!");
             reloadPosts();
           } catch (error) {
-            notyf.error("Paying nft721 grant successfuly!");
+            notyf.error("Paying nft721 grant error!");
             console.log(error);
           } finally {
             removeOverlay("nft721-grant-form");

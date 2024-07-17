@@ -1,131 +1,154 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
-  <title>MiniDAO Admin</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="ie=edge" http-equiv="X-UA-Compatible" />
+    <title>MiniDAO Admin</title>
 
-  <link
+    <link
       href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css"
       rel="stylesheet"
       type="text/css"
-  />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/just-validate@latest/dist/just-validate.production.min.js"></script>
-  <link href="./css/style.css" rel="stylesheet" type="text/css"/>
-</head>
-<body>
-<!--@@include('components/get-forward-contract.html')-->
-@@include('components/preload.html')
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/just-validate@latest/dist/just-validate.production.min.js"></script>
+    <link href="./css/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <!--@@include('components/get-forward-contract.html')-->
+    @@include('components/preload.html')
 
-<main data-theme="light">
-  <div class="fixed top-6 right-8">
-    @@include('components/theme-controller.html')
-  </div>
-
-  <div class="w-full flex flex-col items-center pt-16">
-    <p class="text-2xl font-medium">Admin Panel</p>
-
-    <div class="card bg-base-100 w-96 shadow-xl">
-      <div class="card-body flex flex-col gap-4">
-        <button class="btn" onclick="docs_modal.showModal()">Read documentation</button>
-        <form id="form" class="flex flex-col gap-4 mt-4">
-          <div class="form-control w-full gap-1">
-            <label for="address" class="label-text">Address</label>
-            <input id="address" name="address" type="text" placeholder="Type here"
-                   class="input input-bordered w-full max-w-xs"/>
-          </div>
-          <div class="form-control w-full gap-1">
-            <label for="amount" class="label-text">Amount</label>
-            <input id="amount" name="amount" type="text" placeholder="Type here"
-                   class="input input-bordered w-full max-w-xs"/>
-          </div>
-          <button class="btn btn-primary">Mint</button>
-        </form>
-
-        <script>
-          const form = document.getElementById("form")
-          form.addEventListener("submit", async e => {
-            e.preventDefault()
-            const formData = new FormData(form);
-            const address = formData.get("address")
-            const amount = formData.get("amount")
-
-            if (!address || !amount) {
-              notyf.error("Please fill in all fields!")
-              return
-            }
-
-            try {
-              addOverlay("form")
-              await token_contract.tokenDistribution(address, amount);
-              notyf.success("Token issued successfully!")
-              form.reset()
-            } catch (e) {
-              console.log(e)
-              notyf.error("An error occurred while distributing tokens!")
-            } finally {
-              removeOverlay("form")
-            }
-          })
-        </script>
+    <main data-theme="light">
+      <div class="fixed top-6 right-8">
+        @@include('components/theme-controller.html')
       </div>
-    </div>
-  </div>
-</main>
 
-<dialog id="docs_modal" class="modal">
-  <div class="modal-box">
-    <h3 class="text-lg font-bold">Hello!</h3>
-    <p class="py-4">Please be advised that token allocation among addresses can currently be executed only once. Any
-      additional issuance of tokens will be subject to a voting process. As an initial distributor, you have the
-      capability to allocate a significant number of tokens to yourself and manually distribute the rest to other
-      participants. This initial distribution is crucial and must be carefully planned as subsequent emissions cannot be
-      guaranteed without collective agreement. Choose your allocations wisely to align with your strategic objectives
-      and ensure a fair distribution process.</p>
-    <div class="modal-action">
-      <form method="dialog">
-        <!-- if there is a button in form, it will close the modal -->
-        <button class="btn">Close</button>
+      <div class="w-full flex flex-col items-center pt-16">
+        <p class="text-2xl font-medium">Admin Panel</p>
+
+        <div class="card bg-base-100 w-96 shadow-xl">
+          <div class="card-body flex flex-col gap-4">
+            <button class="btn" onclick="docs_modal.showModal()">
+              Read documentation
+            </button>
+            <form id="form" class="flex flex-col gap-4 mt-4">
+              <div class="form-control w-full gap-1">
+                <label for="address" class="label-text">Address</label>
+                <input
+                  id="address"
+                  name="address"
+                  type="text"
+                  placeholder="Type here"
+                  class="input input-bordered w-full max-w-xs"
+                />
+              </div>
+              <div class="form-control w-full gap-1">
+                <label for="amount" class="label-text">Amount</label>
+                <input
+                  id="amount"
+                  name="amount"
+                  type="text"
+                  placeholder="Type here"
+                  class="input input-bordered w-full max-w-xs"
+                />
+              </div>
+              <button class="btn btn-primary">Mint</button>
+            </form>
+
+            <script>
+              const form = document.getElementById("form");
+              form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const address = formData.get("address");
+                const amount = formData.get("amount");
+
+                if (!address || !amount) {
+                  notyf.error("Please fill in all fields!");
+                  return;
+                }
+
+                try {
+                  addOverlay("form");
+                  const tx = await token_contract.tokenDistribution(
+                    address,
+                    amount,
+                  );
+                  await tx.wait();
+                  notyf.success("Token issued successfully!");
+                  form.reset();
+                } catch (e) {
+                  console.log(e);
+                  notyf.error("An error occurred while distributing tokens!");
+                } finally {
+                  removeOverlay("form");
+                }
+              });
+            </script>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <dialog id="docs_modal" class="modal">
+      <div class="modal-box">
+        <h3 class="text-lg font-bold">Hello!</h3>
+        <p class="py-4">
+          Please be advised that token allocation among addresses can currently
+          be executed only once. Any additional issuance of tokens will be
+          subject to a voting process. As an initial distributor, you have the
+          capability to allocate a significant number of tokens to yourself and
+          manually distribute the rest to other participants. This initial
+          distribution is crucial and must be carefully planned as subsequent
+          emissions cannot be guaranteed without collective agreement. Choose
+          your allocations wisely to align with your strategic objectives and
+          ensure a fair distribution process.
+        </p>
+        <div class="modal-action">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn">Close</button>
+          </form>
+        </div>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
       </form>
-    </div>
-  </div>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
+    </dialog>
 
-<div id="toast-container"></div>
+    <div id="toast-container"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/navigo@8.11.0/lib/navigo.min.js"></script>
-<script
-    crossorigin="anonymous"
-    integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ=="
-    referrerpolicy="no-referrer"
-    src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"
-></script>
-<script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
-<script
-    crossorigin="anonymous"
-    integrity="sha512-yhbfKyAjj1d7DG9IdorCr13o6VVoaRDdYww3u9oRDbOiMw7UkhI607wB54fXUxA9s22Qr8ltpiv18rSe7QifEA=="
-    referrerpolicy="no-referrer"
-    src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.0/ethers.umd.min.js"
-></script>
-<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-<script>
-  const notyf = new Notyf({
-    position: {x: 'center', y: 'top'},
-    dismissible: true,
-    duration: 5000
-  });
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/navigo@8.11.0/lib/navigo.min.js"></script>
+    <script
+      crossorigin="anonymous"
+      integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ=="
+      referrerpolicy="no-referrer"
+      src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <script
+      crossorigin="anonymous"
+      integrity="sha512-yhbfKyAjj1d7DG9IdorCr13o6VVoaRDdYww3u9oRDbOiMw7UkhI607wB54fXUxA9s22Qr8ltpiv18rSe7QifEA=="
+      referrerpolicy="no-referrer"
+      src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.0/ethers.umd.min.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script>
+      const notyf = new Notyf({
+        position: { x: "center", y: "top" },
+        dismissible: true,
+        duration: 5000,
+      });
+    </script>
 
-@@include('js/helpers.html')
-@@include('js/ethers.html')
-</body>
+    @@include('js/helpers.html') @@include('js/ethers.html')
+  </body>
 </html>
