@@ -5,7 +5,7 @@
     <div class="flex flex-col gap-4" v-if="loading">
       <div
         :key="n"
-        class="card card-bordered w-full rounded-xl p-6 shadow-xl"
+        class="custom-card custom-card-bordered w-full rounded-xl p-6 shadow-xl"
         id="skeleton-post"
         v-for="n in 3"
       >
@@ -38,7 +38,7 @@
       <div
         :key="post.index"
         :id="'post_'+post.index"
-        class="card card-bordered w-full rounded-xl p-6 shadow-xl"
+        class="custom-card custom-card-bordered w-full rounded-xl p-6 shadow-xl"
         v-for="post in posts"
       >
         <div class="mb-6 flex items-center justify-between">

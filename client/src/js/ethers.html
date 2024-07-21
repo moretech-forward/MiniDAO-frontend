@@ -23,7 +23,7 @@
     }
   };
 
-  const initApp = async () => {
+  const initLocalApp = async () => {
     provider = new ethers.getDefaultProvider("http://127.0.0.1:8545/");
     signer = await provider.getSigner();
     contract = new ethers.Contract(contract_address, super_abi, signer);
@@ -75,10 +75,6 @@
     walletAddress = await signer.getAddress();
   };
 
-  initApp().then(() => {
-    checkConnection();
-  });
-
   async function checkConnection() {
     try {
       // Проверка провайдера
@@ -126,7 +122,6 @@
     const posts = [];
     let data;
 
-    console.log("ewqfe");
     try {
       // Check if mini_contract is initialized
       if (!mini_contract) throw new Error("Mini contract not initialized");

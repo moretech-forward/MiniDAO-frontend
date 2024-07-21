@@ -1,7 +1,7 @@
 <form class="hidden" id="form-myAddr">
   <div>
     <button
-      class="btn btn-primary mt-2"
+      class="mt-2 btn btn-primary"
       data-form-name="myAddr"
       id="read-btn"
       type="button"
@@ -97,6 +97,8 @@
     );
     setTimeout(checkForContractAddress, 1500);
   } else {
-    initApp();
+    document.addEventListener("DOMContentLoaded", () => {
+      initLocalApp();
+    });
   }
 </script>

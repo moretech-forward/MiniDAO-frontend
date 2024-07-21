@@ -1,7 +1,7 @@
 <form class="hidden" id="form-myAddr">
   <div>
     <button
-      class="btn btn-primary mt-2"
+      class="mt-2 btn btn-primary"
       data-form-name="myAddr"
       id="read-btn"
       type="button"
@@ -93,6 +93,8 @@
     console.log("Setting timeout to start checking for address in 1500ms");
     setTimeout(checkForContractAddress, 1500);
   } else {
-    initApp();
+    document.addEventListener("DOMContentLoaded", () => {
+      initLocalApp();
+    });
   }
 </script>

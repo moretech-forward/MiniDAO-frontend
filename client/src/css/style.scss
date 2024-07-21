@@ -1,5 +1,14 @@
 @import "./tailwind";
 @import "./main";
+@import "daisyui/dist/full.css";
+
+.custom-card {
+  @apply card;
+}
+
+.custom-card-bordered {
+  @apply card-bordered;
+}
 
 body {
   @apply relative;
@@ -79,5 +88,9 @@ label {
 }
 
 .overlay {
+  @apply bg-black/50;
+}
+
+.modal-backdrop {
   @apply bg-black/50;
 }

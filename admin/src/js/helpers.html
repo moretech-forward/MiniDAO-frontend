@@ -39,8 +39,15 @@
   };
 
   const setTheme = () => {
+    const dark_themes = ['dark', 'dim', 'sunset']
     const theme = localStorage.getItem("theme") || "light";
     document.querySelector("main").setAttribute("data-theme", theme);
+
+    if (dark_themes.includes(theme)) {
+      document.body.classList.add("dark")
+    } else {
+      document.body.classList.remove("dark")
+    }
   };
   setTheme();
 
