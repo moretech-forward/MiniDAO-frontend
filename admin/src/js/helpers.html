@@ -5,6 +5,10 @@
 
   function addOverlay(element_id) {
     let el = document.querySelector(`#${element_id}`);
+    if (!el) {
+      notyf.error("Not found element in document!")
+      return
+    }
     const loader = document.createElement("div");
     loader.classList =
       "overlay absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center rounded-2xl";

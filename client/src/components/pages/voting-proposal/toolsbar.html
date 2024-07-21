@@ -9,7 +9,7 @@
           class="dropdown-content menu bg-base-100 rounded-box z-20 border-2 border-neutral-600 w-52 p-2 shadow"
           tabindex="0"
       >
-        <button onclick="delegate()" class="btn btn-accent mb-4">
+        <button id="delegate" onclick="delegate()" class="btn btn-accent mb-4">
           Delegate
         </button>
 
@@ -42,7 +42,7 @@
 <script>
   const delegate = async () => {
     try {
-      addOverlay("app")
+      addOverlay("delegate")
       const delegate = await token_contract.delegate(walletAddress);
       await delegate.wait();
       notyf.success("Success delegate tokens! You can vote!")
@@ -50,7 +50,7 @@
       console.log(e)
       notyf.error("Failed to delegate tokens!")
     } finally {
-      removeOverlay("app")
+      removeOverlay("delegate")
     }
   }
 </script>
