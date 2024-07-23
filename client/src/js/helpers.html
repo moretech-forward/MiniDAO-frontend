@@ -1,6 +1,6 @@
 <script>
   let spinner_html = `
-  <span class="loading loading-spinner loading-lg bg-white"></span>
+  <span class="tw-loading tw-loading-spinner tw-loading-lg bg-white"></span>
 `;
 
   function addOverlay(element_id) {
@@ -40,8 +40,8 @@
 
   const setTheme = () => {
     const dark_themes = ['dark', 'dim', 'sunset']
-    const theme = localStorage.getItem("theme") || "light";
-    document.querySelector("main").setAttribute("data-theme", theme);
+    const theme = localStorage.getItem("theme") || "sunset";
+    document.querySelector("body").setAttribute("data-theme", theme);
 
     if (dark_themes.includes(theme)) {
       document.body.classList.add("dark")

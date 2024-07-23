@@ -14,6 +14,7 @@ module.exports = {
     require("daisyui"),
   ],
   daisyui: {
+    prefix: 'tw-',
     themes: [
       "light",
       "dark",

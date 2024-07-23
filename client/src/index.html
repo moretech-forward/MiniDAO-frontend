@@ -23,20 +23,20 @@
     @@include('components/get-forward-contract.html')
     @@include('components/preload.html')
 
-    <main data-theme="light">
+    <main>
       @@include('components/elements/header.html')
       @@include('components/pages/voting-proposal/page.html')
       @@include('components/pages/templates/page.html')
       @@include('components/pages/donate/page.html')
 
-      <dialog class="modal" id="full_text">
-        <div class="modal-box">
+      <dialog class="tw-modal" id="full_text">
+        <div class="tw-modal-box">
           <h3 class="text-lg font-bold">Full text</h3>
           <p class="py-4"></p>
-          <div class="modal-action">
+          <div class="tw-modal-action">
             <form method="dialog">
               <!-- if there is a button in form, it will close the modal -->
-              <button class="btn">Close</button>
+              <button class="tw-btn">Close</button>
             </form>
           </div>
         </div>

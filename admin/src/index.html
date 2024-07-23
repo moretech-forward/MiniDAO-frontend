@@ -5,19 +5,19 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="ie=edge" http-equiv="X-UA-Compatible" />
     <title>MiniDAO Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/just-validate@latest/dist/just-validate.production.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="./css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     @@include('components/get-forward-contract.html')
     @@include('components/preload.html')
 
-    <main class="text-black dark:text-white" data-theme="light">
+    <main class="text-black dark:text-white">
       <div class="fixed z-20 top-6 right-8">
         @@include('components/theme-controller.html')
       </div>
@@ -27,31 +27,31 @@
 
         <div class="shadow-xl card bg-base-100 w-96 mt-6">
           <div class="flex flex-col gap-4 card-body">
-            <button class="btn" onclick="docs_modal.showModal()">
+            <button class="tw-btn" onclick="docs_modal.showModal()">
               Read documentation
             </button>
             <form id="form" class="flex flex-col gap-4 mt-4">
-              <div class="w-full flex flex-col gap-1">
-                <label for="address" class="label-text">Address</label>
+              <div class="w-full tw-form-control gap-1">
+                <label for="address" class="tw-label-text">Address</label>
                 <input
                   id="address"
                   name="address"
                   type="text"
                   placeholder="Type here"
-                  class="w-full max-w-xs input input-bordered"
+                  class="w-full tw-input tw-input-bordered"
                 />
               </div>
-              <div class="w-full flex flex-col gap-1">
-                <label for="amount" class="label-text">Amount</label>
+              <div class="w-full tw-form-control gap-1">
+                <label for="amount" class="tw-label-text">Amount</label>
                 <input
                   id="amount"
                   name="amount"
                   type="text"
                   placeholder="Type here"
-                  class="w-full max-w-xs input input-bordered"
+                  class="w-full tw-input tw-input-bordered"
                 />
               </div>
-              <button class="btn btn-primary">Mint</button>
+              <button class="custom-primary-btn">Mint</button>
             </form>
 
             <script>
@@ -89,8 +89,8 @@
       </div>
     </main>
 
-    <dialog id="docs_modal" class="modal text-black dark:text-white">
-      <div class="modal-box">
+    <dialog id="docs_modal" class="tw-modal text-black dark:text-white">
+      <div class="tw-modal-box">
         <h3 class="text-lg font-bold">Hello!</h3>
         <p class="py-4">
           Please be advised that token allocation among addresses can currently
@@ -103,14 +103,14 @@
           your allocations wisely to align with your strategic objectives and
           ensure a fair distribution process.
         </p>
-        <div class="modal-action">
+        <div class="tw-modal-action">
           <form method="dialog">
             <!-- if there is a button in form, it will close the modal -->
-            <button class="btn">Close</button>
+            <button class="tw-btn">Close</button>
           </form>
         </div>
       </div>
-      <form method="dialog" class="modal-backdrop">
+      <form method="dialog" class="tw-modal-backdrop">
         <button>close</button>
       </form>
     </dialog>

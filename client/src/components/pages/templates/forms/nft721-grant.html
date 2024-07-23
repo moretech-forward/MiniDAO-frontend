@@ -1,20 +1,20 @@
 <form
   action="#"
-  class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+  class="tw-card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
   data-tab-content="nft721-grant"
   id="nft721-grant-form"
 >
   <button
-    class="btn mb-2"
+    class="tw-btn mb-2"
     onclick="nft721_grant_docs.showModal()"
     type="button"
   >
     Docs for pay ERC721 grant
   </button>
   <div>
-    <label class="label label-text" for="nft721-grant-title">Title</label>
+    <label class="tw-label tw-label-text" for="nft721-grant-title">Title</label>
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="nft721-grant-title"
       name="title"
       placeholder="Type here"
@@ -22,11 +22,11 @@
     />
   </div>
   <div>
-    <label class="label label-text" for="nft721-grant-wallet"
+    <label class="tw-label tw-label-text" for="nft721-grant-wallet"
       >Receiver wallet address</label
     >
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="nft721-grant-wallet"
       name="wallet"
       placeholder="Type here"
@@ -34,9 +34,9 @@
     />
   </div>
   <div>
-    <label class="label label-text" for="nft721-grant-token_id">ID</label>
+    <label class="tw-label tw-label-text" for="nft721-grant-token_id">ID</label>
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="nft721-grant-token_id"
       name="token_id"
       placeholder="Type here token ID"
@@ -45,11 +45,11 @@
     />
   </div>
   <div>
-    <label class="label label-text" for="nft721-grant-token_address"
+    <label class="tw-label tw-label-text" for="nft721-grant-token_address"
       >Token address</label
     >
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="nft721-grant-token_address"
       name="token_address"
       placeholder="Type here"
@@ -58,17 +58,17 @@
     <div id="nft_info" class="mt-2 text-sm text-gray-500"></div>
   </div>
   <div>
-    <label class="label label-text" for="nft721-grant-description"
+    <label class="tw-label tw-label-text" for="nft721-grant-description"
       >Description</label
     >
     <textarea
-      class="textarea textarea-bordered w-full"
+      class="tw-textarea tw-textarea-bordered w-full"
       id="nft721-grant-description"
       name="description"
       placeholder="Type your description"
     ></textarea>
   </div>
-  <button class="btn btn-primary mt-2">Submit Grant</button>
+  <button class="custom-primary-btn mt-2">Submit Grant</button>
 
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
@@ -169,7 +169,6 @@
           const data = Object.fromEntries(formData);
 
           try {
-            checkConnection();
             addOverlay("nft721-grant-form");
             const calldata = (
               await treasury_contract.releaseERC721Token.populateTransaction(
@@ -199,8 +198,8 @@
   </script>
 </form>
 
-<dialog class="modal" id="nft721_grant_docs">
-  <div class="modal-box">
+<dialog class="tw-modal" id="nft721_grant_docs">
+  <div class="tw-modal-box">
     <h3 class="text-lg font-bold">Form Explanation</h3>
     <div class="space-y-4 py-4">
       <p>
@@ -243,10 +242,10 @@
         processed for grant issuance.
       </p>
     </div>
-    <div class="modal-action">
+    <div class="tw-modal-action">
       <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->
-        <button class="btn">Close</button>
+        <button class="tw-btn">Close</button>
       </form>
     </div>
   </div>

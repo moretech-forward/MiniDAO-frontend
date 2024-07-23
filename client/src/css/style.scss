@@ -1,25 +1,35 @@
 @import "./tailwind";
 @import "./main";
-@import "daisyui/dist/full.css";
+
+.custom-primary-btn {
+  @apply rounded-btn h-[48px] hover:bg-primary/60 bg-primary text-white font-bold transition duration-200;
+}
+
+.custom-accent-btn {
+  @apply rounded-btn h-[48px] hover:bg-accent/60 bg-accent text-white font-bold transition duration-200;
+}
 
 .custom-card {
-  @apply card;
+  @apply tw-card;
 }
 
 .custom-card-bordered {
-  @apply card-bordered;
+  @apply tw-card-bordered;
 }
 
 body {
-  @apply relative;
+  @apply min-h-[750px] sm:min-h-[850px] text-black dark:text-white;
 }
 
 main {
-  @apply min-h-[1500px] p-6;
+  @apply p-6;
 }
 
 label {
   @apply m-0;
+}
+.tw-modal {
+  @apply max-h-[750px] sm:max-h-[850px];
 }
 
 #toast-container {
@@ -83,7 +93,7 @@ label {
   display: block;
 }
 
-.tab {
+.tw-tab {
   @apply transition duration-150 hover:bg-gray-300;
 }
 
@@ -93,4 +103,11 @@ label {
 
 .modal-backdrop {
   @apply bg-black/50;
+}
+
+.tw-dropdown-content ul li a {
+  @apply hover:bg-base-300;
+  &.active {
+    @apply bg-base-300;
+  }
 }

@@ -1,12 +1,22 @@
 @import "./tailwind";
 @import "./main";
 
+body {
+  @apply min-h-[750px] sm:min-h-[850px] text-black dark:text-white;
+}
+
 main {
-  @apply min-h-[1500px] p-6;
+  @apply p-6;
+}
+.tw-modal {
+  @apply max-h-[750px] sm:max-h-[850px];
 }
 
 label {
   @apply m-0;
+}
+.custom-primary-btn {
+  @apply rounded-btn h-[48px] hover:bg-primary/60 bg-primary text-white font-bold transition duration-200;
 }
 
 #toast-container {

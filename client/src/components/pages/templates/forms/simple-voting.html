@@ -1,20 +1,20 @@
 <form
   action="#"
-  class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+  class="tw-card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
   data-tab-content="simple-voting"
   id="simple-voting-form"
 >
   <button
-    class="btn mb-2"
+    class="tw-btn mb-2"
     onclick="simple_voting_docs.showModal()"
     type="button"
   >
     Docs for simple voting
   </button>
   <div>
-    <label class="label label-text" for="simple_voting_title">Title</label>
+    <label class="tw-label tw-label-text" for="simple_voting_title">Title</label>
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="simple_voting_title"
       name="title"
       placeholder="Type here"
@@ -22,17 +22,17 @@
     />
   </div>
   <div>
-    <label class="label label-text" for="simple_voting_description"
+    <label class="tw-label tw-label-text" for="simple_voting_description"
       >Description</label
     >
     <textarea
-      class="textarea textarea-bordered w-full"
+      class="tw-textarea tw-textarea-bordered w-full"
       id="simple_voting_description"
       name="description"
       placeholder="Type your description"
     ></textarea>
   </div>
-  <button class="btn btn-primary mt-2">Submit Proposal</button>
+  <button class="custom-primary-btn mt-2">Submit Proposal</button>
 
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
@@ -62,7 +62,7 @@
           const calldatas = ["0x00"];
 
           try {
-            checkConnection();
+
             addOverlay("simple-voting-form");
             console.log(data.description);
             const tx = await mini_contract.proposeWithTitle(
@@ -87,8 +87,8 @@
   </script>
 </form>
 
-<dialog class="modal" id="simple_voting_docs">
-  <div class="modal-box">
+<dialog class="tw-modal" id="simple_voting_docs">
+  <div class="tw-modal-box">
     <h3 class="text-lg font-bold">Form Explanation</h3>
     <div class="space-y-4 py-4">
       <p>
@@ -115,10 +115,10 @@
         then be processed to initiate the voting process.
       </p>
     </div>
-    <div class="modal-action">
+    <div class="tw-modal-action">
       <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->
-        <button class="btn">Close</button>
+        <button class="tw-btn">Close</button>
       </form>
     </div>
   </div>

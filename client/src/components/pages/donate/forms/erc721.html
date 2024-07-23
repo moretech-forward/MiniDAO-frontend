@@ -1,15 +1,15 @@
 <form
   action="#"
-  class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+  class="tw-card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
   data-tab-content="donate-erc721"
   id="donate-erc721-form"
 >
   <div>
-    <label class="label label-text" data-tip="hello" for="nft_address"
+    <label class="tw-label tw-label-text" data-tip="hello" for="nft_address"
       >Token address</label
     >
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="nft_address"
       name="nft_address"
       placeholder="Type here"
@@ -18,11 +18,11 @@
     <div id="donate_nft_info" class="mt-2 text-sm text-gray-500"></div>
   </div>
   <div>
-    <label class="label label-text" data-tip="hello" for="donate_id"
+    <label class="tw-label tw-label-text" data-tip="hello" for="donate_id"
       >Token ID</label
     >
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="donate_id"
       name="donate_id"
       placeholder="Type here"
@@ -31,7 +31,7 @@
     />
   </div>
 
-  <button class="btn btn-primary mt-2">Submit</button>
+  <button class="custom-primary-btn mt-2">Submit</button>
 
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
@@ -81,7 +81,6 @@
           },
         ])
         .onSuccess(async (event) => {
-          checkConnection();
           event.preventDefault();
           const formData = new FormData(event.target);
           const data = Object.fromEntries(formData);

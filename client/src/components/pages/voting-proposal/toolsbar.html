@@ -1,38 +1,38 @@
 <div class="flex items-center justify-between">
   <p class="text-3xl font-medium">Proposals</p>
   <div class="flex items-center gap-2">
-    <div class="dropdown dropdown-end">
-      <div class="btn m-1" role="button" tabindex="0">
+    <div class="tw-dropdown tw-dropdown-end">
+      <div id="actions-button" class="tw-btn m-1" role="button" tabindex="0">
         Actions
       </div>
       <div
-          class="dropdown-content menu bg-base-100 rounded-box z-20 border-2 border-neutral-600 w-52 p-2 shadow"
+          class="tw-dropdown-content menu flex flex-col bg-base-100 rounded-box z-20 border-2 border-neutral-600 w-52 p-2 shadow"
           tabindex="0"
       >
-        <button id="delegate" onclick="delegate()" class="btn btn-accent mb-4">
+        <button id="delegate" onclick="delegate()" class="custom-accent-btn mb-4">
           Delegate
         </button>
 
-        <button class="btn btn-accent" onclick="reloadPosts()">
+        <button class="custom-accent-btn" onclick="reloadPosts()">
           Update posts
         </button>
       </div>
     </div>
-    <div class="dropdown dropdotewn-end" id="filter-dropdown">
-      <div class="btn m-1" id="filter-button" role="button" tabindex="0">
+    <div class="tw-dropdown tw-dropdown-end" id="filter-dropdown">
+      <div class="tw-btn m-1" id="filter-button" role="button" tabindex="0">
         Filters
       </div>
       <div
-          class="dropdown-content menu bg-base-100 rounded-box z-20 border-2 border-neutral-600 w-52 p-2 shadow"
+          class="tw-dropdown-content tw-menu bg-base-100 rounded-box z-20 border-2 border-neutral-600 w-52 p-2 shadow"
           tabindex="0"
       >
         <input
-            class="input input-bordered flex max-h-10 w-full items-center gap-2"
+            class="tw-input tw-input-bordered flex max-h-10 w-full items-center gap-2"
             id="search-input"
             placeholder="Search"
             type="text"
         />
-        <div class="divider">AND</div>
+        <div class="tw-divider">AND</div>
         <ul id="filter-dropdown-content"></ul>
       </div>
     </div>
@@ -43,6 +43,7 @@
   const delegate = async () => {
     try {
       addOverlay("delegate")
+      addOverlay("actions-button")
       const delegate = await token_contract.delegate(walletAddress);
       await delegate.wait();
       notyf.success("Success delegate tokens! You can vote!")
@@ -51,6 +52,7 @@
       notyf.error("Failed to delegate tokens!")
     } finally {
       removeOverlay("delegate")
+      removeOverlay("actions-button")
     }
   }
 </script>

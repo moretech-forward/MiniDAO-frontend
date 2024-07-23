@@ -33,9 +33,9 @@
     tabs.forEach((tab) => {
       tab.addEventListener("click", (event) => {
         tabs.forEach((el) => {
-          el.classList.remove("tab-active");
+          el.classList.remove("tw-tab-active");
         });
-        tab.classList.add("tab-active");
+        tab.classList.add("tw-tab-active");
 
         const tabId = tab.getAttribute("data-tab-target");
         tabContents.forEach((tabContent) => {

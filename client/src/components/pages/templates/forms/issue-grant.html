@@ -1,16 +1,16 @@
 <form
   action="#"
-  class="card bg-base-100 mt-4 flex w-96 flex-col gap-2 p-6 shadow"
+  class="tw-card bg-base-100 mt-4 flex w-96 flex-col gap-2 p-6 shadow"
   data-tab-content="issue-grant"
   id="issue-grant-form"
 >
-  <button class="btn mb-2" onclick="issue_grant_docs.showModal()" type="button">
+  <button class="tw-btn mb-2" onclick="issue_grant_docs.showModal()" type="button">
     Docs for issue native token grant
   </button>
   <div>
-    <label class="label label-text" for="issue_grant_title">Title</label>
+    <label class="tw-label tw-label-text" for="issue_grant_title">Title</label>
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="issue_grant_title"
       name="title"
       placeholder="Type here"
@@ -18,11 +18,11 @@
     />
   </div>
   <div>
-    <label class="label label-text" data-tip="hello" for="issue_grant_wallet"
+    <label class="tw-label tw-label-text" data-tip="hello" for="issue_grant_wallet"
       >Receiver wallet address</label
     >
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="issue_grant_wallet"
       name="wallet"
       placeholder="Type here"
@@ -30,11 +30,11 @@
     />
   </div>
   <div>
-    <label class="label label-text" data-tip="hello" for="issue_grant_amount"
+    <label class="tw-label tw-label-text" data-tip="hello" for="issue_grant_amount"
       >Amount</label
     >
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="issue_grant_amount"
       name="amount"
       placeholder="Type here"
@@ -45,19 +45,19 @@
   </div>
   <div>
     <label
-      class="label label-text"
+      class="tw-label tw-label-text"
       data-tip="hello"
       for="issue_grant_description"
       >Description</label
     >
     <textarea
-      class="textarea textarea-bordered w-full"
+      class="tw-textarea tw-textarea-bordered w-full"
       id="issue_grant_description"
       name="description"
       placeholder="Type your description"
     ></textarea>
   </div>
-  <button class="btn btn-primary mt-2">Submit Grant</button>
+  <button class="custom-primary-btn mt-2">Submit Grant</button>
 
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
@@ -118,7 +118,6 @@
           const data = Object.fromEntries(formData);
 
           try {
-            checkConnection();
             const balance = await provider.getBalance(treasury_address);
             const amount = ethers.parseEther(data.amount);
             console.log("Amount:", amount);
@@ -157,8 +156,8 @@
   </script>
 </form>
 
-<dialog class="modal" id="issue_grant_docs">
-  <div class="modal-box">
+<dialog class="tw-modal" id="issue_grant_docs">
+  <div class="tw-modal-box">
     <h3 class="text-lg font-bold">Form Explanation</h3>
     <div class="space-y-4 py-4">
       <p>
@@ -190,10 +189,10 @@
         processed for grant issuance.
       </p>
     </div>
-    <div class="modal-action">
+    <div class="tw-modal-action">
       <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->
-        <button class="btn">Close</button>
+        <button class="tw-btn">Close</button>
       </form>
     </div>
   </div>

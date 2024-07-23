@@ -1,20 +1,20 @@
 <form
   action="#"
-  class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+  class="tw-card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
   data-tab-content="additional-mint"
   id="additional-mint-form"
 >
   <button
-    class="btn mb-2"
+    class="tw-btn mb-2"
     onclick="additional_mint_docs.showModal()"
     type="button"
   >
     Docs for additional mint
   </button>
   <div>
-    <label class="label label-text" for="additional-mint-title">Title</label>
+    <label class="tw-label tw-label-text" for="additional-mint-title">Title</label>
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="additional-mint-title"
       name="title"
       placeholder="Type here"
@@ -22,11 +22,11 @@
     />
   </div>
   <div>
-    <label class="label label-text" for="additional-mint-wallet"
+    <label class="tw-label tw-label-text" for="additional-mint-wallet"
       >Receiver wallet address</label
     >
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="additional-mint-wallet"
       name="wallet"
       placeholder="Type here"
@@ -34,9 +34,9 @@
     />
   </div>
   <div>
-    <label class="label label-text" for="additional-mint-amount">Amount</label>
+    <label class="tw-label tw-label-text" for="additional-mint-amount">Amount</label>
     <input
-      class="input input-bordered w-full"
+      class="tw-input tw-input-bordered w-full"
       id="additional-mint-amount"
       name="amount"
       placeholder="Type here"
@@ -46,17 +46,17 @@
     />
   </div>
   <div>
-    <label class="label label-text" for="additional-mint-description"
+    <label class="tw-label tw-label-text" for="additional-mint-description"
       >Desciption</label
     >
     <textarea
-      class="textarea textarea-bordered w-full"
+      class="tw-textarea tw-textarea-bordered w-full"
       id="additional-mint-description"
       name="description"
       placeholder="Type your description"
     ></textarea>
   </div>
-  <button class="btn btn-primary mt-2">Submit Minting Request</button>
+  <button class="custom-primary-btn mt-2">Submit Minting Request</button>
 </form>
 
 <script type="module">
@@ -114,7 +114,6 @@
         const data = Object.fromEntries(formData);
 
         try {
-          checkConnection();
           const calldata = (
             await token_contract.mint.populateTransaction(
               data.wallet,
@@ -128,9 +127,10 @@
             data.description,
             data.title,
           );
-          tx.wait();
+          await tx.wait();
           reloadPosts();
           notyf.success("Successfully minted!");
+          document.getElementById("additional-mint-form").reset()
         } catch (error) {
           console.log("Error: ", error);
           notyf.error("Error mint!");
@@ -144,8 +144,8 @@
   });
 </script>
 
-<dialog class="modal" id="additional_mint_docs">
-  <div class="modal-box">
+<dialog class="tw-modal" id="additional_mint_docs">
+  <div class="tw-modal-box">
     <h3 class="text-lg font-bold">Form Explanation</h3>
     <div class="space-y-4 py-4">
       <p>
@@ -183,10 +183,10 @@
         be processed for minting additional tokens.
       </p>
     </div>
-    <div class="modal-action">
+    <div class="tw-modal-action">
       <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->
-        <button class="btn">Close</button>
+        <button class="tw-btn">Close</button>
       </form>
     </div>
   </div>

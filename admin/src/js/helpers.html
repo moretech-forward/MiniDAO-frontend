@@ -1,6 +1,6 @@
 <script>
   let spinner_html = `
-  <span class="loading loading-spinner loading-lg bg-white"></span>
+  <span class="tw-loading tw-loading-spinner tw-loading-lg bg-white"></span>
 `;
 
   function addOverlay(element_id) {
@@ -27,25 +27,10 @@
     }
   }
 
-  const getStatusNameById = (status_id) => {
-    const statusMap = {
-      0: "Pending",
-      1: "Active",
-      2: "Canceled",
-      3: "Defeated",
-      4: "Succeeded",
-      5: "Queued",
-      6: "Expired",
-      7: "Executed",
-    };
-
-    return statusMap[status_id] || "Unknown Status";
-  };
-
   const setTheme = () => {
     const dark_themes = ['dark', 'dim', 'sunset']
-    const theme = localStorage.getItem("theme") || "light";
-    document.querySelector("main").setAttribute("data-theme", theme);
+    const theme = localStorage.getItem("theme") || "sunset";
+    document.querySelector("body").setAttribute("data-theme", theme);
 
     if (dark_themes.includes(theme)) {
       document.body.classList.add("dark")
@@ -54,40 +39,4 @@
     }
   };
   setTheme();
-
-  function getVotingEndText(vote_end) {
-    const now = moment();
-    const end = moment.unix(Number(vote_end));
-
-    if (now.isBefore(end)) {
-      return `Ends in ${end.fromNow(true)}`;
-    } else {
-      return `Ended ${end.fromNow()}`;
-    }
-  }
-
-  const set_text_modals = () => {
-    const all_texts = document.querySelectorAll("[data-show-full]");
-    all_texts.forEach((text) => {
-      text.addEventListener("click", () => {
-        console.log(text.innerHTML);
-        document.querySelector("#full_text p").innerHTML = text.innerHTML;
-        document.getElementById("full_text").showModal();
-      });
-    });
-  };
-
-  function formatNumber(num) {
-    return Math.abs(num) >= 1.0e9
-      ? (num / 1.0e9).toFixed(1) + "B"
-      : Math.abs(num) >= 1.0e6
-        ? (num / 1.0e6).toFixed(1) + "M"
-        : Math.abs(num) >= 1.0e3
-          ? (num / 1.0e3).toFixed(1) + "K"
-          : num.toString();
-  }
-
-  async function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 </script>

@@ -35,27 +35,4 @@
 
     walletAddress = await signer.getAddress();
   };
-
-  async function checkConnection() {
-    try {
-      // Проверка провайдера
-      await provider.getNetwork();
-
-      // Проверка signer (кошелька)
-      const address = await signer.getAddress();
-      if (!address) throw new Error("Wallet address not available");
-
-      console.log("All connections are available");
-    } catch (error) {
-      console.error("Connection check failed:", error.message);
-      if (
-        confirm(
-          "A contract or wallet is not available. Do you want to reinitialize the application?",
-        )
-      ) {
-        await initApp(); // comment before upload to forward
-        // await initForwardApp(); // only for forward
-      }
-    }
-  }
 </script>
