@@ -203,11 +203,6 @@
           Executed: "bg-gray-100 text-gray-800",
         },
       },
-      created() {
-        setTimeout(() => {
-          this.loadPosts();
-        }, 1000);
-      },
       methods: {
         // VOTE
         async vote(proposalId, voteId, post_index, status_id) {
@@ -304,24 +299,31 @@
         },
         // EXECUTE
         async executeProposal(post_extra, post_index) {
-          try {
-            addOverlay(`post_${post_index}`);
-            const tx = await mini_contract.execute(
-              post_extra.targets,
-              post_extra.values,
-              post_extra.calldatas,
-              post_extra.descriptionHash,
-            );
-            await tx.wait();
-            notyf.success("Proposal executed successfully!");
-            setTimeout(() => {
-              reloadPosts();
-            }, 500);
-          } catch (e) {
-            console.log(e);
-            notyf.error("Error executing proposal!");
-          } finally {
-            removeOverlay(`post_${post_index}`);
+          const min_delay = await time_lock_contract.getMinDelay();
+          const now = moment().unix();
+
+          if (now > min_delay + post_extra.vote_end) {
+            try {
+              addOverlay(`post_${post_index}`);
+              const tx = await mini_contract.execute(
+                post_extra.targets,
+                post_extra.values,
+                post_extra.calldatas,
+                post_extra.descriptionHash,
+              );
+              await tx.wait();
+              notyf.success("Proposal executed successfully!");
+              setTimeout(() => {
+                reloadPosts();
+              }, 500);
+            } catch (e) {
+              console.log(e);
+              notyf.error("Error executing proposal!");
+            } finally {
+              removeOverlay(`post_${post_index}`);
+            }
+          } else {
+            notyf.error("The proposal can't be executed yet")
           }
         },
         // CANCEL

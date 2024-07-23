@@ -9,19 +9,7 @@
   let contract, mini_contract, token_contract, treasury_contract;
   contract_address = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
-  const getForwardContractAddress = () => {
-    const button = document.getElementById("btn");
-    if (button) {
-      button.click();
-
-      setTimeout(() => {
-        contract_address = document.getElementById(
-          "form-output-myAddr-0",
-        ).innerHTML;
-        console.log("contract address: ", contract_address);
-      }, 500);
-    }
-  };
+  let time_lock_contract;
 
   const initLocalApp = async () => {
     provider = new ethers.getDefaultProvider("http://127.0.0.1:8545/");
@@ -41,12 +29,15 @@
       signer,
     );
 
+    const time_lock_address = await contract.timeLock();
+    time_lock_contract = new ethers.Contract(time_lock_address, time_lock_abi, signer)
+
     walletAddress = await signer.getAddress();
-    // Set name of DAO
     const title_dao = document.getElementById("title_dao");
     title_dao.textContent = await mini_contract.name();
 
     console.log("Delegates to:", await token_contract.delegates(walletAddress));
+    reloadPosts()
   };
 
   const initForwardApp = async () => {
@@ -73,6 +64,11 @@
     );
 
     walletAddress = await signer.getAddress();
+
+    const title_dao = document.getElementById("title_dao");
+    title_dao.textContent = await mini_contract.name();
+
+    reloadPosts()
   };
 
   async function fetchPosts() {
@@ -159,6 +155,7 @@
             ethers.toUtf8Bytes(item.args.description),
           ),
           proposalId: item.args.proposalId,
+          vote_end: item.args.voteEnd,
         },
       };
 

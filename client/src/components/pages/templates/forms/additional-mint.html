@@ -42,7 +42,7 @@
       placeholder="Type here"
       type="number"
       min="0"
-      step="0.01"
+      step="1"
     />
   </div>
   <div>
@@ -137,9 +137,6 @@
         } finally {
           removeOverlay("additional-mint-form");
         }
-
-        console.log("Form data:", data);
-        notyf.success("Minting successful");
       });
   });
 </script>
