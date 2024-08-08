@@ -1,3 +1,10 @@
+<div class="flex items-center mt-6 mb-3 justify-between">
+  <div class="tw-btn" onclick="options_modal.showModal()" role="button" tabindex="0">
+    Show DAO settings
+  </div>
+  <span class="bg-purple-100 text-purple-800 rounded-full px-2 py-1 font-semibold text-xs">Sepolia</span>
+</div>
+
 <div class="flex items-center justify-between">
   <p class="text-3xl font-medium">Proposals</p>
   <div class="flex items-center gap-2">
@@ -47,6 +54,7 @@
       const delegate = await token_contract.delegate(walletAddress);
       await delegate.wait();
       notyf.success("Success delegate tokens! You can vote!")
+      reloadPosts();
     } catch (e) {
       console.log(e)
       notyf.error("Failed to delegate tokens!")
@@ -129,3 +137,32 @@
       }
     })
 </script>
+
+
+<dialog class="tw-modal" id="options_modal">
+  <div class="tw-modal-box">
+    <h3 class="text-lg font-bold">DAO app settings</h3>
+    <div class="bg-base-200 p-4 rounded-r-xl mt-6 border-l-2 border-green-500">
+      <ul class="space-y-4">
+        <li class="w-full flex items-center justify-between">
+          <span>Token Name:</span>
+          <span class="text-primary">SuperDAO</span>
+        </li>
+        <li class="w-full flex items-center justify-between">
+          <span>Delay:</span>
+          <span class="text-primary">1000ms</span>
+        </li>
+        <li class="w-full flex items-center justify-between">
+          <span>Voting duration:</span>
+          <span class="text-primary">259200ms</span>
+        </li>
+      </ul>
+    </div>
+    <div class="tw-modal-action">
+      <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="tw-btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>

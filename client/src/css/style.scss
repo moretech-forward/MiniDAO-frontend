@@ -111,3 +111,9 @@ label {
     @apply bg-base-300;
   }
 }
+
+.voting-option:hover {
+  transition: 0.15s all;
+  scale: 1.02;
+  opacity: 0.6;
+}
