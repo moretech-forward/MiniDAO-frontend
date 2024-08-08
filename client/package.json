@@ -4,7 +4,8 @@
   "description": "TailwindCSS StarterKit with Gulp 4",
   "main": "gulpfile.js",
   "dependencies": {
-    "gulp-ignore": "^3.0.0"
+    "gulp-ignore": "^3.0.0",
+    "gulp-purgecss": "^6.0.0"
   },
   "devDependencies": {
     "@tailwindcss/container-queries": "^0.1.0",

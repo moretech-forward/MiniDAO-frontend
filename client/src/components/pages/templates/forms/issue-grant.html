@@ -4,9 +4,14 @@
   data-tab-content="issue-grant"
   id="issue-grant-form"
 >
-  <button class="tw-btn mb-2" onclick="issue_grant_docs.showModal()" type="button">
+  <button
+    class="tw-btn mb-2"
+    onclick="issue_grant_docs.showModal()"
+    type="button"
+  >
     Docs for issue native token grant
   </button>
+  <span id="native_token_balance"></span>
   <div>
     <label class="tw-label tw-label-text" for="issue_grant_title">Title</label>
     <input
@@ -18,7 +23,10 @@
     />
   </div>
   <div>
-    <label class="tw-label tw-label-text" data-tip="hello" for="issue_grant_wallet"
+    <label
+      class="tw-label tw-label-text"
+      data-tip="hello"
+      for="issue_grant_wallet"
       >Receiver wallet address</label
     >
     <input
@@ -30,7 +38,10 @@
     />
   </div>
   <div>
-    <label class="tw-label tw-label-text" data-tip="hello" for="issue_grant_amount"
+    <label
+      class="tw-label tw-label-text"
+      data-tip="hello"
+      for="issue_grant_amount"
       >Amount</label
     >
     <input

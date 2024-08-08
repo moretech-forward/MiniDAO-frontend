@@ -16,7 +16,12 @@
       <copy-button :address="token_address"></copy-button>
     </p>
 
-    <div class="tw-tabs tw-tabs-boxed" data-tabs-nav id="donate-tabs" role="tablist">
+    <div
+      class="tw-tabs tw-tabs-boxed"
+      data-tabs-nav
+      id="donate-tabs"
+      role="tablist"
+    >
       <a class="tw-tab tw-tab-active" data-tab-target="donate-native" role="tab"
         >Native</a
       >
@@ -53,9 +58,12 @@
             }
           }, 1000);
         },
+
         async fetchDaoBalance(address) {
-          const balance = await provider.getBalance(address);
-          this.eth_balance = ethers.formatEther(balance);
+          const balance = ethers.formatEther(
+            await provider.getBalance(treasury_address),
+          );
+          this.eth_balance = balance;
           const token_name = await token_contract.name();
           const token_symbol = await token_contract.symbol();
           this.dao_token = token_name + " (" + token_symbol + ")";
@@ -64,6 +72,19 @@
             await token_contract.balanceOf(address),
             decimals,
           );
+
+          const native_token_balance = document.getElementById(
+            "native_token_balance",
+          );
+          native_token_balance.innerHTML = `Treasury balance: ${balance}`;
+
+          const totalSupply = ethers.formatEther(
+            await token_contract.totalSupply(),
+          );
+          const token_dao_total_supply = document.getElementById(
+            "token_dao_total_supply",
+          );
+          token_dao_total_supply.innerHTML = `Total Supply: ${totalSupply}`;
         },
       },
     });

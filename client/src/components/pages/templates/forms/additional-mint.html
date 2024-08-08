@@ -11,8 +11,11 @@
   >
     Docs for additional mint
   </button>
+  <span id="token_dao_total_supply"></span>
   <div>
-    <label class="tw-label tw-label-text" for="additional-mint-title">Title</label>
+    <label class="tw-label tw-label-text" for="additional-mint-title"
+      >Title</label
+    >
     <input
       class="tw-input tw-input-bordered w-full"
       id="additional-mint-title"
@@ -34,7 +37,9 @@
     />
   </div>
   <div>
-    <label class="tw-label tw-label-text" for="additional-mint-amount">Amount</label>
+    <label class="tw-label tw-label-text" for="additional-mint-amount"
+      >Amount</label
+    >
     <input
       class="tw-input tw-input-bordered w-full"
       id="additional-mint-amount"
@@ -47,7 +52,7 @@
   </div>
   <div>
     <label class="tw-label tw-label-text" for="additional-mint-description"
-      >Desciption</label
+      >Description</label
     >
     <textarea
       class="tw-textarea tw-textarea-bordered w-full"
@@ -130,7 +135,7 @@
           await tx.wait();
           reloadPosts();
           notyf.success("Successfully minted!");
-          document.getElementById("additional-mint-form").reset()
+          document.getElementById("additional-mint-form").reset();
         } catch (error) {
           console.log("Error: ", error);
           notyf.error("Error mint!");

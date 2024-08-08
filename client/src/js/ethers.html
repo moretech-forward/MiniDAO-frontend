@@ -30,14 +30,20 @@
     );
 
     const time_lock_address = await contract.timeLock();
-    time_lock_contract = new ethers.Contract(time_lock_address, time_lock_abi, signer)
+    time_lock_contract = new ethers.Contract(
+      time_lock_address,
+      time_lock_abi,
+      signer,
+    );
 
     walletAddress = await signer.getAddress();
     const title_dao = document.getElementById("title_dao");
     title_dao.textContent = await mini_contract.name();
 
-    console.log("Delegates to:", await token_contract.delegates(walletAddress));
-    reloadPosts()
+    await getNetworkName();
+    await setInfo();
+
+    reloadPosts();
   };
 
   const initForwardApp = async () => {
@@ -63,13 +69,74 @@
       signer,
     );
 
-    walletAddress = await signer.getAddress();
+    const time_lock_address = await contract.timeLock();
+    time_lock_contract = new ethers.Contract(
+      time_lock_address,
+      time_lock_abi,
+      signer,
+    );
 
+    walletAddress = await signer.getAddress();
     const title_dao = document.getElementById("title_dao");
     title_dao.textContent = await mini_contract.name();
 
-    reloadPosts()
+    await getNetworkName();
+    await setInfo();
+
+    reloadPosts();
   };
+
+  async function getNetworkName() {
+    const network = await provider.getNetwork();
+    try {
+      const response = await fetch("https://chainid.network/chains.json");
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+      const chains = await response.json();
+
+      const chainData = chains.find(
+        (chain) => chain.chainId === Number(network.chainId),
+      );
+
+      if (!chainData) {
+        throw new Error(`Chain with ID ${network.chainId} not found`);
+      }
+
+      const network_name = document.getElementById("network_name");
+      network_name.innerHTML = chainData.name;
+    } catch (error) {
+      console.error("Error fetching network name:", error);
+      return "Unknown Network";
+    }
+  }
+
+  function formatToDDHHMMSS(seconds) {
+    const days = Math.floor(seconds / (24 * 60 * 60));
+    seconds %= 24 * 60 * 60;
+    const hours = Math.floor(seconds / (60 * 60));
+    seconds %= 60 * 60;
+    const minutes = Math.floor(seconds / 60);
+    seconds %= 60;
+    return `${days.toString().padStart(2, "0")}:${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  }
+
+  async function setInfo() {
+    const token_name = document.getElementById("token_name");
+    token_name.innerHTML = await token_contract.name();
+
+    const voting_delay = document.getElementById("voting_delay");
+    const votingDelayValue = await mini_contract.votingDelay();
+    voting_delay.innerHTML = formatToDDHHMMSS(Number(votingDelayValue));
+
+    const voting_duration = document.getElementById("voting_duration");
+    const votingDurationValue = await mini_contract.votingPeriod();
+    voting_duration.innerHTML = formatToDDHHMMSS(Number(votingDurationValue));
+
+    const min_delay = document.getElementById("min_delay");
+    const minDelayValue = await time_lock_contract.getMinDelay();
+    min_delay.innerHTML = formatToDDHHMMSS(Number(minDelayValue));
+  }
 
   async function fetchPosts() {
     const posts = [];
