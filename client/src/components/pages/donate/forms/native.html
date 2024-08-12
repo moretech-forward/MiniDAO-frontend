@@ -5,7 +5,9 @@
   id="donate-native-form"
 >
   <div>
-    <label class="tw-label tw-label-text" data-tip="hello" for="amount">Amount</label>
+    <label class="tw-label tw-label-text" data-tip="hello" for="amount"
+      >Amount</label
+    >
     <input
       class="tw-input tw-input-bordered w-full"
       id="amount"
@@ -15,12 +17,19 @@
       min="0"
       step="0.000001"
     />
+    <div id="native_balance_wallet" class="mt-2 text-sm text-gray-500"></div>
   </div>
   <button class="custom-primary-btn mt-2">Submit</button>
 
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
       const validation = new window.JustValidate("#donate-native-form");
+      const amount_input = document.getElementById("amount");
+      const balanceToken = document.getElementById("native_balance_wallet");
+
+      amount_input.addEventListener("input", async () => {
+        balanceToken.textContent = `Your balance: ${ethers.formatEther(await provider.getBalance(walletAddress))}`;
+      });
 
       validation
         .addField("#amount", [

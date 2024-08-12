@@ -49,7 +49,7 @@
             tokenNameDiv.textContent = "Invalid token address";
           }
         } else {
-          tokenNameDiv.textContent = "Enter the address of the token";
+          tokenNameDiv.textContent = "Invalid token address";
         }
       });
 
@@ -88,19 +88,32 @@
           try {
             addOverlay("donate-erc721-form");
             const token_address = data.nft_address;
+            const donate_id = data.donate_id;
+
             const tokenContract = new ethers.Contract(
               token_address,
               erc721_abi,
               signer,
             );
-            //0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
-            const tx = await tokenContract.safeTransferFrom(
-              walletAddress,
-              treasury_address,
-              data.donate_id,
-            );
 
-            await tx.wait();
+            const approvedAddress = await tokenContract.getApproved(donate_id);
+
+            console.log(approvedAddress);
+            if (
+              approvedAddress.toLowerCase() !== treasury_address.toLowerCase()
+            ) {
+              const approveTx = await tokenContract.approve(
+                treasury_address,
+                donate_id,
+              );
+              await approveTx.wait();
+            }
+
+            const depositTx = await treasury_contract.depositERC721(
+              token_address,
+              donate_id,
+            );
+            await depositTx.wait();
 
             notyf.success("erc721 donate successful!");
             document.getElementById("donate-erc721-form").reset();

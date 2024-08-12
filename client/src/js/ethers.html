@@ -13,37 +13,39 @@
 
   const initLocalApp = async () => {
     provider = new ethers.getDefaultProvider("http://127.0.0.1:8545/");
-    signer = await provider.getSigner();
-    contract = new ethers.Contract(contract_address, super_abi, signer);
+    initApp();
+    // signer = await provider.getSigner();
+    // contract = new ethers.Contract(contract_address, super_abi, signer);
 
-    mini_address = await contract.governor();
-    mini_contract = new ethers.Contract(mini_address, mini_abi, signer);
+    // mini_address = await contract.governor();
+    // mini_contract = new ethers.Contract(mini_address, mini_abi, signer);
 
-    token_address = await contract.token();
-    token_contract = new ethers.Contract(token_address, token_abi, signer);
+    // token_address = await contract.token();
+    // token_contract = new ethers.Contract(token_address, token_abi, signer);
 
-    treasury_address = await contract.treasury();
-    treasury_contract = new ethers.Contract(
-      treasury_address,
-      treasury_abi,
-      signer,
-    );
+    // treasury_address = await contract.treasury();
+    // treasury_contract = new ethers.Contract(
+    //   treasury_address,
+    //   treasury_abi,
+    //   signer,
+    // );
 
-    const time_lock_address = await contract.timeLock();
-    time_lock_contract = new ethers.Contract(
-      time_lock_address,
-      time_lock_abi,
-      signer,
-    );
+    // const time_lock_address = await contract.timeLock();
+    // time_lock_contract = new ethers.Contract(
+    //   time_lock_address,
+    //   time_lock_abi,
+    //   signer,
+    // );
 
-    walletAddress = await signer.getAddress();
-    const title_dao = document.getElementById("title_dao");
-    title_dao.textContent = await mini_contract.name();
+    // walletAddress = await signer.getAddress();
+    // const title_dao = document.getElementById("title_dao");
+    // title_dao.textContent = await mini_contract.name();
 
-    await getNetworkName();
-    await setInfo();
+    // await getNetworkName();
+    // await setInfo();
+    // await getDonateEvents();
 
-    reloadPosts();
+    // reloadPosts();
   };
 
   const initForwardApp = async () => {
@@ -53,6 +55,43 @@
     } else {
       provider = new ethers.BrowserProvider(window.parent.ethereum);
     }
+
+    initApp();
+    // signer = await provider.getSigner();
+    // contract = new ethers.Contract(contract_address, super_abi, signer);
+
+    // mini_address = await contract.governor();
+    // mini_contract = new ethers.Contract(mini_address, mini_abi, signer);
+
+    // token_address = await contract.token();
+    // token_contract = new ethers.Contract(token_address, token_abi, signer);
+
+    // treasury_address = await contract.treasury();
+    // treasury_contract = new ethers.Contract(
+    //   treasury_address,
+    //   treasury_abi,
+    //   signer,
+    // );
+
+    // const time_lock_address = await contract.timeLock();
+    // time_lock_contract = new ethers.Contract(
+    //   time_lock_address,
+    //   time_lock_abi,
+    //   signer,
+    // );
+
+    // walletAddress = await signer.getAddress();
+    // const title_dao = document.getElementById("title_dao");
+    // title_dao.textContent = await mini_contract.name();
+
+    // await getNetworkName();
+    // await setInfo();
+    // await getDonateEvents();
+
+    // reloadPosts();
+  };
+
+  const initApp = async () => {
     signer = await provider.getSigner();
     contract = new ethers.Contract(contract_address, super_abi, signer);
 
@@ -82,6 +121,7 @@
 
     await getNetworkName();
     await setInfo();
+    await getDonateEvents();
 
     reloadPosts();
   };
@@ -231,5 +271,61 @@
     }
 
     return posts.reverse();
+  }
+
+  async function getDonateEvents() {
+    const erc20_events = await treasury_contract.queryFilter("ERC20Deposited");
+    const erc721_events =
+      await treasury_contract.queryFilter("ERC721Deposited");
+
+    let erc20_table = [];
+    let erc721_table = [];
+
+    const allAddresses = erc20_events.map((item) => item.args.token);
+    const uniqueAddresses = [...new Set(allAddresses)];
+
+    // parse ERC20
+    for (let i = 0; i < uniqueAddresses.length; i++) {
+      const tokenCon = new ethers.Contract(
+        uniqueAddresses[i],
+        token_abi,
+        signer,
+      );
+      const name = await tokenCon.name();
+      const symbol = await tokenCon.symbol();
+      const decimals = await tokenCon.decimals();
+      const balance = ethers.formatUnits(
+        await tokenCon.balanceOf(treasury_address),
+        decimals,
+      );
+
+      erc20_table.push({
+        token: uniqueAddresses[i],
+        name: name,
+        symbol: symbol,
+        balance: balance,
+      });
+    }
+
+    // parse ERC721
+    for (const [index, item] of erc721_events.entries()) {
+      console.log(item.args.token, item.args.tokenId);
+      const token = item.args.token;
+      const tolenId = item.args.tokenId;
+      const tokenCon = new ethers.Contract(token, erc721_abi, signer);
+
+      const owner = await tokenCon.ownerOf(tolenId);
+
+      if (owner.toLowerCase() === treasury_address.toLowerCase()) {
+        const uri = await tokenCon.tokenURI(tolenId);
+
+        erc721_table.push({
+          token: token,
+          uri: uri,
+        });
+      }
+    }
+    console.log(erc20_table);
+    console.log(erc721_table);
   }
 </script>

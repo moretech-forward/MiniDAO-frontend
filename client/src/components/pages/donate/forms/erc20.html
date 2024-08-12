@@ -15,10 +15,12 @@
       placeholder="Type here"
       type="text"
     />
-    <div id="token_name" class="mt-2 text-sm text-gray-500"></div>
+    <div id="token_donate_info" class="mt-2 text-sm text-gray-500"></div>
   </div>
   <div>
-    <label class="tw-label tw-label-text" data-tip="hello" for="donate_amount">Amount</label>
+    <label class="tw-label tw-label-text" data-tip="hello" for="donate_amount"
+      >Amount</label
+    >
     <input
       class="tw-input tw-input-bordered w-full"
       id="donate_amount"
@@ -35,20 +37,22 @@
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
       const tokenAddressInput = document.getElementById("token_address");
-      const tokenNameDiv = document.getElementById("token_name");
+      const tokenNameElement = document.getElementById("token_donate_info");
 
       tokenAddressInput.addEventListener("input", async () => {
         const tokenAddress = tokenAddressInput.value;
         if (tokenAddress.length === 42 && ethers.isAddress(tokenAddress)) {
           // Проверка адреса токена и получение имени токена
           const tokenName = await getTokenInfo(tokenAddress);
+          tokenNameElement.textContent = "323";
+          console.log(tokenName);
           if (tokenName) {
-            tokenNameDiv.textContent = `Token name: ${tokenName}`;
+            tokenNameElement.textContent = `Token name: ${tokenName}`;
           } else {
-            tokenNameDiv.textContent = "Invalid token address";
+            tokenNameElement.textContent = "Invalid token address";
           }
         } else {
-          tokenNameDiv.textContent = "Enter the address of the token";
+          tokenNameElement.textContent = "Invalid token address";
         }
       });
 
@@ -134,14 +138,31 @@
 
             const wallet_balance = await tokenContract.balanceOf(walletAddress);
             console.log("Wallet Balance", wallet_balance);
-            console.log(multipliedValue);
+            console.log("Amount", multipliedValue);
+
             if (wallet_balance > multipliedValue) {
-              const tx = await tokenContract.transfer(
+              const allowance = await tokenContract.allowance(
+                walletAddress,
                 treasury_address,
+              );
+
+              console.log("Current allowance", allowance);
+
+              if (allowance < multipliedValue) {
+                const approveTx = await tokenContract.approve(
+                  treasury_address,
+                  "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                );
+
+                await approveTx.wait();
+              }
+
+              const depositTx = await treasury_contract.depositERC20(
+                token_address,
                 multipliedValue,
               );
 
-              await tx.wait();
+              await depositTx.wait();
 
               notyf.success("ERC20 donate successful!");
               document.getElementById("donate-erc20-form").reset();

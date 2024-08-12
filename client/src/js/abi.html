@@ -60,6 +60,7 @@
   ];
 
   const super_abi = [
+    "constructor(uint256 _minDelay, string _nameToken, string _symbolToken, string _nameDAO, uint48 _votingDelay, uint32 _votingPeriod, uint256 _quorumValue) payable",
     "function governor() view returns (address)",
     "function myAddr() view returns (address)",
     "function timeLock() view returns (address)",
@@ -68,6 +69,11 @@
   ];
 
   const token_abi = [
+    "constructor(address _timelock, string _name, string _symbol)",
+    "function CLOCK_MODE() pure returns (string)",
+    "function DOMAIN_SEPARATOR() view returns (bytes32)",
+    "function allowance(address owner, address spender) view returns (uint256)",
+    "function approve(address spender, uint256 value) returns (bool)",
     "function balanceOf(address account) view returns (uint256)",
     "function checkpoints(address account, uint32 pos) view returns (tuple(uint48 _key, uint208 _value))",
     "function clock() view returns (uint48)",
@@ -82,8 +88,12 @@
     "function mint(address to, uint256 amount)",
     "function mintBatch(address[] to, uint256[] amount)",
     "function name() view returns (string)",
+    "function nonces(address _owner) view returns (uint256)",
+    "function numCheckpoints(address account) view returns (uint32)",
+    "function owner() view returns (address)",
+    "function permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s)",
     "function symbol() view returns (string)",
-    "function tokenDistribution(address[] to, uint256[] amount)",
+    "function tokenDistribution(address to, uint256 amount)",
     "function totalSupply() view returns (uint256)",
     "function transfer(address to, uint256 value) returns (bool)",
     "function transferFrom(address from, address to, uint256 value) returns (bool)",
@@ -91,6 +101,10 @@
 
   const treasury_abi = [
     "constructor(address _timelock) payable",
+    "event ERC20Deposited(address token)",
+    "event ERC721Deposited(address token, uint256 tokenId)",
+    "function depositERC20(address token, uint256 amount)",
+    "function depositERC721(address token, uint256 tokenId)",
     "function onERC721Received(address, address, uint256, bytes) returns (bytes4)",
     "function owner() view returns (address)",
     "function releaseERC20Token(address to, uint256 amount, address token)",
@@ -99,11 +113,41 @@
   ];
 
   const erc721_abi = [
+    "constructor()",
+    "error ERC721IncorrectOwner(address sender, uint256 tokenId, address owner)",
+    "error ERC721InsufficientApproval(address operator, uint256 tokenId)",
+    "error ERC721InvalidApprover(address approver)",
+    "error ERC721InvalidOperator(address operator)",
+    "error ERC721InvalidOwner(address owner)",
+    "error ERC721InvalidReceiver(address receiver)",
+    "error ERC721InvalidSender(address sender)",
+    "error ERC721NonexistentToken(uint256 tokenId)",
+    "error OwnableInvalidOwner(address owner)",
+    "error OwnableUnauthorizedAccount(address account)",
+    "event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId)",
+    "event ApprovalForAll(address indexed owner, address indexed operator, bool approved)",
+    "event BatchMetadataUpdate(uint256 _fromTokenId, uint256 _toTokenId)",
+    "event MetadataUpdate(uint256 _tokenId)",
+    "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+    "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
+    "function approve(address to, uint256 tokenId)",
+    "function balanceOf(address owner) view returns (uint256)",
+    "function getApproved(uint256 tokenId) view returns (address)",
+    "function isApprovedForAll(address owner, address operator) view returns (bool)",
+    "function name() view returns (string)",
+    "function owner() view returns (address)",
+    "function ownerOf(uint256 tokenId) view returns (address)",
+    "function renounceOwnership()",
+    "function safeMint(address to, string uri)",
     "function safeTransferFrom(address from, address to, uint256 tokenId)",
+    "function safeTransferFrom(address from, address to, uint256 tokenId, bytes data)",
+    "function setApprovalForAll(address operator, bool approved)",
+    "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+    "function symbol() view returns (string)",
+    "function tokenURI(uint256 tokenId) view returns (string)",
     "function transferFrom(address from, address to, uint256 tokenId)",
+    "function transferOwnership(address newOwner)",
   ];
 
-  const time_lock_abi = [
-    "function getMinDelay() view returns (uint256)",
-  ]
+  const time_lock_abi = ["function getMinDelay() view returns (uint256)"];
 </script>
