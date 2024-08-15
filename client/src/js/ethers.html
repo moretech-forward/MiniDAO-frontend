@@ -253,27 +253,27 @@
 
       if (owner.toLowerCase() === treasury_address.toLowerCase()) {
         const uri = await tokenCon.tokenURI(tokenId);
-        const metadata = await fetchMetadata(uri)
+        const metadata = await fetchMetadata(uri);
 
         erc721_table.push({
           id: tokenId,
           token: token,
           uri: uri,
-          ...metadata
+          ...metadata,
         });
       }
     }
     console.log(erc20_table);
     console.log(erc721_table);
 
-    let erc20_table_body = document.getElementById('erc20_table_body')
-    let erc20_table_empty = document.getElementById('erc20_table_empty')
+    let erc20_table_body = document.getElementById("erc20_table_body");
+    let erc20_table_empty = document.getElementById("erc20_table_empty");
     if (erc20_table) {
-      erc20_table_empty.classList.remove('flex')
-      erc20_table_empty.classList.add('hidden')
+      erc20_table_empty.classList.remove("flex");
+      erc20_table_empty.classList.add("hidden");
 
-      erc20_table_body.innerHTML = '';
-      erc20_table.forEach(el => {
+      erc20_table_body.innerHTML = "";
+      erc20_table.forEach((el) => {
         erc20_table_body.innerHTML += `
           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <td class="py-4 px-3">${el.name}</td>
@@ -281,40 +281,41 @@
             <td class="py-4 px-3" data-ctc="${el.token}">${shortenAddress(el.token)}</td>
             <td class="py-4 px-3">${el.balance}</td>
           </tr>
-        `
-      })
+        `;
+      });
     } else {
-      erc20_table_empty.classList.remove('hidden')
-      erc20_table_empty.classList.add('flex')
+      erc20_table_empty.classList.remove("hidden");
+      erc20_table_empty.classList.add("flex");
     }
 
-    let nfts_table_body = document.getElementById('nfts_table_body')
-    let nfts_table_empty = document.getElementById('nfts_table_empty')
+    let nfts_table_body = document.getElementById("nfts_table_body");
+    let nfts_table_empty = document.getElementById("nfts_table_empty");
     if (erc721_table) {
-      nfts_table_empty.classList.remove('flex')
-      nfts_table_empty.classList.add('hidden')
-      nfts_table_body.innerHTML = '';
-      erc721_table.forEach(el => {
+      nfts_table_empty.classList.remove("flex");
+      nfts_table_empty.classList.add("hidden");
+      nfts_table_body.innerHTML = "";
+      erc721_table.forEach((el) => {
         nfts_table_body.innerHTML += `
           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <td class="py-4 px-3">${el.id}</td>
+            <td class="py-4 px-3" data-ctc="${el.token}">${shortenAddress(el.token)}</td>
             <td class="py-4 px-3">
               <img
                   class="max-h-24 rounded"
-                  src="${el.image ?? 'https://placehold.co/1200x800/EEE/31343C'}"
+                  src="${el.image ?? "https://placehold.co/1200x800/EEE/31343C"}"
                   alt="img"
               />
             </td>
-            <td class="py-4 px-3">${el.name ?? 'Not found'}</td>
-            <td class="py-4 px-3">${el.description ?? 'Not found'}</td>
+            <td class="py-4 px-3">${el.name ?? "Not found"}</td>
+            <td class="py-4 px-3">${el.description ?? "Not found"}</td>
           </tr>
-        `
-      })
+        `;
+      });
     } else {
-      nfts_table_empty.classList.remove('hidden')
-      nfts_table_empty.classList.add('flex')
+      nfts_table_empty.classList.remove("hidden");
+      nfts_table_empty.classList.add("flex");
     }
 
-    initCtc()
+    initCtc();
   }
 </script>
