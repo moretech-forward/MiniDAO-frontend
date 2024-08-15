@@ -114,6 +114,7 @@
               donate_id,
             );
             await depositTx.wait();
+            await getDonateEvents();
 
             notyf.success("erc721 donate successful!");
             document.getElementById("donate-erc721-form").reset();

@@ -120,3 +120,7 @@ label {
 .custom-table {
   @apply table;
 }
+
+[data-ctc] {
+  @apply transition duration-150 hover:text-blue-500 cursor-pointer;
+}

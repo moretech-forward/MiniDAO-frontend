@@ -4,45 +4,24 @@
       <p class="text-xl font-medium">ERC20 Tokens</p>
       <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
         <table
-          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+            class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
         >
           <thead
-            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
           >
-            <tr>
-              <th scope="col" class="py-3 px-3">Name</th>
-              <th scope="col" class="py-3 px-3">Symbol</th>
-              <th scope="col" class="py-3 px-3">Address</th>
-              <th scope="col" class="py-3 px-3">Balance</th>
-            </tr>
+          <tr>
+            <th scope="col" class="py-3 px-3">Name</th>
+            <th scope="col" class="py-3 px-3">Symbol</th>
+            <th scope="col" class="py-3 px-3">Address</th>
+            <th scope="col" class="py-3 px-3">Balance</th>
+          </tr>
           </thead>
-          <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td class="py-4 px-3">Some Token</td>
-              <td class="py-4 px-3">Pepe</td>
-              <td class="py-4 px-3">0x000...0000</td>
-              <td class="py-4 px-3">1000$</td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td class="py-4 px-3">Some Token</td>
-              <td class="py-4 px-3">Pepe</td>
-              <td class="py-4 px-3">0x000...0000</td>
-              <td class="py-4 px-3">1000$</td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td class="py-4 px-3">Some Token</td>
-              <td class="py-4 px-3">Pepe</td>
-              <td class="py-4 px-3">0x000...0000</td>
-              <td class="py-4 px-3">1000$</td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td class="py-4 px-3">Some Token</td>
-              <td class="py-4 px-3">Pepe</td>
-              <td class="py-4 px-3">0x000...0000</td>
-              <td class="py-4 px-3">1000$</td>
-            </tr>
+          <tbody id="erc20_table_body">
           </tbody>
         </table>
+        <div id="erc20_table_empty" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 py-10 flex items-center justify-center">
+          <p>No entries</p>
+        </div>
       </div>
     </div>
 
@@ -50,70 +29,37 @@
       <p class="text-xl font-medium">NFT Tokens</p>
       <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
         <table
-          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+            class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
         >
           <thead
-            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
           >
-            <tr>
-              <th scope="col" class="py-3 px-3">Person</th>
-              <th scope="col" class="py-3 px-3">Bank Account</th>
-              <th scope="col" class="py-3 px-3">Amount</th>
-              <th scope="col" class="py-3 px-3">Approved</th>
-            </tr>
+          <tr>
+            <th scope="col" class="py-3 px-3">ID</th>
+            <th scope="col" class="py-3 px-3">IMAGE</th>
+            <th scope="col" class="py-3 px-3">NAME</th>
+            <th scope="col" class="py-3 px-3">DESCRIPTION</th>
+          </tr>
           </thead>
-          <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td class="py-4 px-3">
-                <img
-                  class="max-h-24 rounded"
-                  src="https://placehold.co/1200x800/EEE/31343C"
-                  alt="img"
-                />
-              </td>
-              <td class="py-4 px-3">82926417</td>
-              <td class="py-4 px-3">$4,500.00</td>
-              <td class="py-4 px-3">Yes</td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td class="py-4 px-3">
-                <img
-                  class="max-h-24 rounded"
-                  src="https://placehold.co/1200x800/EEE/31343C"
-                  alt="img"
-                />
-              </td>
-              <td class="py-4 px-3">82926417</td>
-              <td class="py-4 px-3">$4,500.00</td>
-              <td class="py-4 px-3">Yes</td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td class="py-4 px-3">
-                <img
-                  class="max-h-24 rounded"
-                  src="https://placehold.co/1200x800/EEE/31343C"
-                  alt="img"
-                />
-              </td>
-              <td class="py-4 px-3">82926417</td>
-              <td class="py-4 px-3">$4,500.00</td>
-              <td class="py-4 px-3">Yes</td>
-            </tr>
+          <tbody id="nfts_table_body">
           </tbody>
         </table>
+        <div id="nfts_table_empty" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 py-10 flex items-center justify-center">
+          <p>No entries</p>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const treasury = new Vue({
+  document.addEventListener('DOMContentLoaded', () => {
+    const treasuryVue = new Vue({
       el: "#treasury",
       data: {
         erc20: [],
         nfts: [],
       },
     });
-  });
+  })
 </script>

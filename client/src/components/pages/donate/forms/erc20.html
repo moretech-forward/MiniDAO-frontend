@@ -164,6 +164,7 @@
 
               await depositTx.wait();
 
+              await getDonateEvents();
               notyf.success("ERC20 donate successful!");
               document.getElementById("donate-erc20-form").reset();
               fetchDaoBalance();

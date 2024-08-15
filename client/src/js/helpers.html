@@ -86,4 +86,55 @@
   async function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
+
+  const shortenAddress = (address) => {
+    return address
+      ? `${address.slice(0, 6)}...${address.slice(-4)}`
+      : "loading...";
+  }
+
+  const initCtc = () => {
+    const items = document.querySelectorAll('[data-ctc]');
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const textToCopy = item.getAttribute('data-ctc');
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          console.log(`Copied: ${textToCopy}`);
+          notyf.success('Success copied!')
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+          notyf.error('Failed to copy text!')
+        });
+      });
+    });
+  }
+
+  const fetchMetadata = async (url) => {
+    if (!isValidUrl(url)) {
+      console.error("Invalid URL");
+      return null;  // Return null if the URL is invalid
+    }
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return await response.json();  // Return the fetched data
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+      return null;  // Return null in case of error
+    }
+  }
+
+  const isValidUrl = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 </script>
