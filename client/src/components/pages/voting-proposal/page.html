@@ -140,7 +140,9 @@
         </div>
 
         <div class="flex items-center justify-between mt-4">
-          <p class="text-gray-500" v-if="post.status_id !== 2">{{ post.time }}</p>
+          <p class="text-gray-500" v-if="post.status_id !== 2">
+            {{ post.time }}
+          </p>
           <div
             v-if="post.status_id === 0 || post.status_id === 4 || post.status_id === 5"
             class="tw-dropdown tw-dropdown-top tw-dropdown-end z-10"
@@ -211,24 +213,39 @@
             const delefates_addr =
               await token_contract.delegates(walletAddress);
             if (delefates_addr != ethers.ZeroAddress) {
-              try {
-                addOverlay(`post_${post_index}`);
-                // console.log(voteId);
-                // console.log(await token_contract.balanceOf(walletAddress));
+              const timepoint =
+                await mini_contract.proposalSnapshot(proposalId);
+              const getPastVotes = await token_contract.getPastVotes(
+                walletAddress,
+                timepoint,
+              );
+              console.log("getPastVotes", getPastVotes);
 
-                // console.log(await mini_contract.proposalVotes(proposalId));
-                const tx = await mini_contract.castVote(proposalId, voteId);
+              if (getPastVotes === 0n) {
+                notyf.error(
+                  "You delegated tokens too late, your vote is not counted in this vote",
+                );
+              } else {
+                try {
+                  addOverlay(`post_${post_index}`);
 
-                await tx.wait();
-                setTimeout(() => {
-                  reloadPosts();
-                }, 500);
-                notyf.success("Success voting!");
-              } catch (e) {
-                console.log(e);
-                notyf.error("Error voting!");
-              } finally {
-                removeOverlay(`post_${post_index}`);
+                  const tx = await mini_contract.castVote(proposalId, voteId);
+
+                  await tx.wait();
+                  setTimeout(() => {
+                    reloadPosts();
+                  }, 500);
+                  notyf.success("Success voting!");
+                } catch (e) {
+                  console.log(e);
+                  if (e.toString().toLowerCase().includes("0x71c6af49")) {
+                    notyf.error("You've already voted!");
+                  } else {
+                    notyf.error("Error voting!");
+                  }
+                } finally {
+                  removeOverlay(`post_${post_index}`);
+                }
               }
             } else {
               notyf.error(
@@ -318,12 +335,17 @@
               }, 500);
             } catch (e) {
               console.log(e);
-              notyf.error("Error executing proposal!");
+
+              if (e.toString().toLowerCase().includes("0x5ead8eb5")) {
+                notyf.error("The proposal can't be executed yet");
+              } else {
+                notyf.error("Error executing proposal!");
+              }
             } finally {
               removeOverlay(`post_${post_index}`);
             }
           } else {
-            notyf.error("The proposal can't be executed yet")
+            notyf.error("The proposal can't be executed yet");
           }
         },
         // CANCEL
