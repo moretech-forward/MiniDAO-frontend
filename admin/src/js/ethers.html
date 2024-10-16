@@ -20,7 +20,7 @@
     walletAddress = await signer.getAddress();
   };
 
-  const initForwardApp = async () => {
+  const initApp = async () => {
     if (window.parent.ethereum == null) {
       console.log("MetaMask not installed; using read-only defaults");
       provider = new ethers.JsonRpcProvider();
@@ -34,5 +34,8 @@
     token_contract = new ethers.Contract(token_address, token_abi, signer);
 
     walletAddress = await signer.getAddress();
+
+    app_status.innerText = 'Ready to use!'
+    app_status.className = 'text-green-500'
   };
 </script>

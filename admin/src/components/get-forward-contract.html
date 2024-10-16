@@ -1,10 +1,10 @@
 <form class="hidden" id="form-myAddr">
   <div>
     <button
-      class="mt-2 btn btn-primary"
-      data-form-name="myAddr"
-      id="read-btn"
-      type="button"
+        class="mt-2 btn btn-primary"
+        data-form-name="myAddr"
+        id="read-btn"
+        type="button"
     >
       Read
     </button>
@@ -14,10 +14,10 @@
     <div>
       :
       <span
-        data-field-type="address"
-        data-form-name="myAddr"
-        id="form-output-myAddr-0"
-        >address</span
+          data-field-type="address"
+          data-form-name="myAddr"
+          id="form-output-myAddr-0"
+      >address</span
       >
       <br />
     </div>
@@ -35,63 +35,87 @@
 
 <script>
   const logStyle = "color: green; font-weight: bold;";
+  const infoStyle = "color: blue; font-weight: bold;";
   const errorStyle = "color: red; font-weight: bold;";
+
+  var app_status;
+  setTimeout(() => {
+    app_status = document.getElementById('app-status')
+    console.log(app_status)
+    app_status.innerText = 'Loading...'
+    app_status.className = 'text-orange-500'
+  }, 100)
 
   console.log("%cScript initialized", logStyle);
 
-  const checkForContractAddress = () => {
-    console.log("%cStarting to check for contract address", logStyle);
+  const getMetadataWithRetries = async (retries = 3) => {
+    try {
+      app_status.innerText = 'Fetching metadata...'
+      // Получаем текущий URL
+      const currentUrl = window.location.href;
+      // const currentUrl = 'https://forwardfactory.ai/services/my-apps/admin/29d4acd3-473a-4340-bec4-767a55f76184';
+      console.log("%cCurrent URL: " + currentUrl, infoStyle);
 
-    const checkAddress = () => {
-      console.log("Checking for contract address in the document");
-      const addressElement = document.getElementById("form-output-myAddr-0");
-      const address = addressElement ? addressElement.innerHTML : null;
-      const addressRegex = /^(0x)?[0-9a-fA-F]{40}$/;
+      // Используем регулярное выражение для извлечения сегмента после /admin/
+      const regex = /\/admin\/([^\/]+)/;
+      const match = currentUrl.match(regex);
 
-      if (address) {
-        console.log(`Found address: ${address}`);
+      if (!match) {
+        throw new Error("Segment after /admin/ not found in the URL");
+      }
+
+      const adminAppId = match[1];
+      console.log("%cExtracted segment after /admin/: " + adminAppId, infoStyle);
+
+      // Формируем API URL
+      const apiUrl = `https://forwardfactory.ai/api/network/userwebapp/admin/${adminAppId}/`;
+      console.log("%cAPI URL: " + apiUrl, infoStyle);
+
+      // Логируем количество оставшихся попыток
+      console.log("%cAttempting to fetch API. Retries left: " + retries, logStyle);
+
+      // Делаем запрос к API
+      const response = await fetch(apiUrl, { method: 'GET' });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Получаем JSON ответ
+      const data = await response.json();
+
+      // Проверяем наличие и корректность contractAddress
+      const contractAddress = data.contractAddress;
+      if (validateContractAddress(contractAddress)) {
+        contract_address = contractAddress;
+        console.log("%cContract address is valid: " + contract_address, logStyle);
+        app_status.innerText = 'Init app...'
+        initApp();
       } else {
-        console.log("Address not found");
+        throw new Error("Invalid contractAddress format");
       }
-
-      if (address && addressRegex.test(address)) {
-        console.log(`%cAddress ${address} is valid`, logStyle);
-        contract_address = address;
-        initForwardApp();
-        console.log("%cCalled initApp...", logStyle);
-        return true;
+    } catch (error) {
+      console.error("%cError fetching data: " + error.message, errorStyle);
+      if (retries > 0) {
+        console.log("%cRetrying in 1500ms...", infoStyle);
+        setTimeout(() => getMetadataWithRetries(retries - 1), 1500);
       } else {
-        console.log(`%cAddress: ${address} is invalid`, errorStyle);
+        console.error("%cFailed after 3 attempts", errorStyle);
       }
-      return false;
-    };
+    }
+  }
 
-    console.log("Setting interval to check address every 250 ms");
-    const intervalId = setInterval(() => {
-      if (checkAddress()) {
-        clearInterval(intervalId);
-        clearTimeout(timeoutId);
-        console.log("%cAddress found and interval cleared", logStyle);
-      }
-    }, 250);
+  const validateContractAddress = (address) => {
+    const regex = /^0x[a-fA-F0-9]{40}$/; // Стандартный формат для Ethereum адресов
+    return regex.test(address);
+  }
 
-    // Set timeout for 5 seconds to stop checking
-    const timeoutId = setTimeout(() => {
-      clearInterval(intervalId);
-      console.error(
-        "%cFailed to obtain contract address within the time limit",
-        errorStyle,
-      );
-      notyf.error(
-        "Failed to obtain contract address within the time limit, reload page!",
-      );
-    }, 5000);
-  };
-
-  const is_forward = false;
+  const is_forward = true;
   if (is_forward) {
-    console.log("Setting timeout to start checking for address in 1500ms");
-    setTimeout(checkForContractAddress, 1500);
+    console.log("%cSetting timeout to start checking for address in 1500ms", infoStyle);
+    setTimeout(() => {
+      getMetadataWithRetries()
+    }, 100)
   } else {
     document.addEventListener("DOMContentLoaded", () => {
       initLocalApp();

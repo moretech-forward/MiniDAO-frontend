@@ -40,65 +40,70 @@
 
   console.log("%cScript initialized", logStyle);
 
-  const checkForContractAddress = () => {
-    console.log("%cStarting to check for contract address", logStyle);
+  const getMetadataWithRetries = async (retries = 3) => {
+    try {
+      // Получаем текущий URL
+      const currentUrl = window.location.href;
+      // const currentUrl = 'https://dfjknskjvnns.forwardfactory.ai/subdomain';
+      console.log("%cCurrent URL: " + currentUrl, infoStyle);
 
-    const checkAddress = () => {
-      console.log("Checking for contract address in the document");
-      const addressElement = document.getElementById("form-output-myAddr-0");
-      const address = addressElement ? addressElement.innerHTML : null;
-      const addressRegex = /^(0x)?[0-9a-fA-F]{40}$/;
+      // Получаем поддомен из URL
+      const subdomain = window.location.hostname.split('.')[0];
+      // const subdomain = 'dfjknskjvnns.forwardfactory.ai'.split('.')[0];
+      console.log("%cExtracted subdomain: " + subdomain, infoStyle);
 
-      if (address) {
-        console.log(`Found address: ${address}`);
+      // Формируем API URL, используя поддомен как параметр frontendSubdomain
+      const apiUrl = `https://forwardfactory.ai/api/network/userwebapp/frontend/${subdomain}/`;
+      console.log("%cAPI URL: " + apiUrl, infoStyle);
+
+      // Логируем количество оставшихся попыток
+      console.log("%cAttempting to fetch API. Retries left: " + retries, logStyle);
+
+      // Делаем запрос к API
+      const response = await fetch(apiUrl, { method: 'GET' });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Получаем JSON ответ
+      const data = await response.json();
+      console.log("%cAPI Response: " + JSON.stringify(data), logStyle);
+
+      // Проверяем наличие и корректность contractAddress
+      const contractAddress = data.contractAddress;
+      if (validateContractAddress(contractAddress)) {
+        contract_address = contractAddress;
+        console.log("%cContract address is valid: " + contract_address, logStyle);
+        initForwardApp(); // Вызываем initApp после успешного получения и валидации
       } else {
-        console.log("Address not found");
+        throw new Error("Invalid contractAddress format");
       }
-
-      if (address && addressRegex.test(address)) {
-        console.log(`%cAddress ${address} is valid`, logStyle);
-        contract_address = address;
-        initForwardApp();
-        console.log("%cCalled initApp...", logStyle);
-        return true;
+    } catch (error) {
+      console.error("%cError fetching data: " + error.message, errorStyle);
+      if (retries > 0) {
+        console.log("%cRetrying in 1500ms...", infoStyle);
+        setTimeout(() => getMetadataWithRetries(retries - 1), 1500);
       } else {
-        console.log(`%cAddress: ${address} is invalid`, errorStyle);
+        console.error("%cFailed after 3 attempts", errorStyle);
       }
-      return false;
-    };
+    }
+  }
 
-    console.log("Setting interval to check address every 250 ms");
-    const intervalId = setInterval(() => {
-      if (checkAddress()) {
-        clearInterval(intervalId);
-        clearTimeout(timeoutId);
-        console.log("%cAddress found and interval cleared", logStyle);
-      }
-    }, 250);
+  const validateContractAddress = (address) => {
+    const regex = /^0x[a-fA-F0-9]{40}$/; // Стандартный формат для Ethereum адресов
+    return regex.test(address);
+  }
 
-    // Set timeout for 5 seconds to stop checking
-    const timeoutId = setTimeout(() => {
-      clearInterval(intervalId);
-      console.error(
-        "%cFailed to obtain contract address within the time limit",
-        errorStyle,
-      );
-      notyf.error(
-        "Failed to obtain contract address within the time limit, reload page!",
-      );
-    }, 5000);
-  };
-
-  const is_forward = false;
+  const is_forward = true;
   if (is_forward) {
-    console.log(
-      "Setting timeout to start checking for address in 1500ms",
-      infoStyle,
-    );
-    setTimeout(checkForContractAddress, 1500);
+    console.log("%cSetting timeout to start checking for address in 1500ms", infoStyle);
+    setTimeout(() => getMetadataWithRetries(), 100);
   } else {
     document.addEventListener("DOMContentLoaded", () => {
       initLocalApp();
     });
   }
 </script>
+
+
